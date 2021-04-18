@@ -4,7 +4,7 @@ import java.beans.PropertyChangeListener;
 
 import com.jgoodies.binding.beans.ExtendedPropertyChangeSupport;
 
-public class GbsTag {
+public class Bean {
 	
 	private ExtendedPropertyChangeSupport changeSupport = new ExtendedPropertyChangeSupport(
 			this);
@@ -13,7 +13,7 @@ public class GbsTag {
 	private String composer = "";
 	private String copyright = "";
 	
-	public GbsTag() {
+	public Bean() {
 	}
 	
 	public String getTitle() {
