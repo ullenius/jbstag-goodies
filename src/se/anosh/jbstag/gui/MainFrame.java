@@ -19,8 +19,7 @@ import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.beans.BeanAdapter;
 import com.jgoodies.binding.value.ValueModel;
 
-import se.anosh.gbs.dao.GbsFileReader;
-import se.anosh.gbs.domain.Tag;
+import se.anosh.gbs.domain.ReadOnlySimpleGbsTag;
 import se.anosh.gbs.service.GbsFile;
 import se.anosh.jbstag.model.Bean;
 
@@ -37,6 +36,7 @@ public class MainFrame extends JFrame {
 	private Bean bean;
 	private Path filePath;
 	
+	private ReadOnlySimpleGbsTag tag;
 
 	private static final int TEXTFIELD_COLUMNS = 30;
 
@@ -95,20 +95,23 @@ public class MainFrame extends JFrame {
 
 			if (readFile(selectedFile.getAbsolutePath())) {
 				filePath = selectedFile.toPath();
-				//updateFields();
+				updateFields();
 			}
 			//toggleInputFields();
 			//toggleSaveButton();
 		}
-	}      
+	}
+	
+	private void updateFields() {
+		bean.setComposer(tag.getAuthor());
+		bean.setTitle(tag.getTitle());
+		bean.setCopyright(tag.getCopyright());
+	}
 	
 	private boolean readFile(final String filename) {
 		try {
 			GbsFile reader = new GbsFile(filename);
-			Tag tag = reader.getTag();
-			bean.setComposer(tag.getAuthor());
-			bean.setTitle(tag.getTitle());
-			bean.setCopyright(tag.getCopyright());
+			tag = reader.getTag();
 			return true;
 		} catch (IOException ex) {
 			//showErrorMessageBox("Unable to open file: " + ex.getMessage());
