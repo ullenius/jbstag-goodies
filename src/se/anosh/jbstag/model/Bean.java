@@ -31,9 +31,9 @@ public class Bean {
 	}
 	
 	public void setComposer(String composer) {
-		String oldValue = this.title;
+		String oldValue = this.composer;
 		this.composer = composer;
-		changeSupport.firePropertyChange("title", oldValue, title);
+		changeSupport.firePropertyChange("composer", oldValue, composer);
 	}
 	
 	public String getCopyright() {
@@ -41,9 +41,9 @@ public class Bean {
 	}
 	
 	public void setCopyright(String copyright) {
-		String oldValue = this.title;
+		String oldValue = this.copyright;
 		this.copyright = copyright;
-		changeSupport.firePropertyChange("title", oldValue, title);
+		changeSupport.firePropertyChange("copyright", oldValue, copyright);
 	}
 	
 	public void addPropertyChangeListener(PropertyChangeListener x) {
