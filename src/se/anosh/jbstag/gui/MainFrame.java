@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
 	
 	private JTextField filenameField;
 	private Bean bean;
-	private Path filePath;
+	private Path filePath; // FIXME unused
 	
 	private ReadOnlySimpleGbsTag tag;
 
@@ -44,9 +44,9 @@ public class MainFrame extends JFrame {
 
 		super("Jbstag 0.2");
 		bean = new Bean();
-		bean.setTitle("The Legend of Zelda: Link's Awakening");
-		bean.setComposer("Minako Hamano");
-		bean.setCopyright("1993 Nintendo");
+		bean.setTitle("Fooobar");
+		bean.setComposer("Foo composer");
+		bean.setCopyright("Foobar AB");
 		
 		saveButton = new JButton("Save");
 		openButton = new JButton("Open file");
@@ -65,13 +65,18 @@ public class MainFrame extends JFrame {
 		ValueModel titleModel = adapter.getValueModel("title");
 		ValueModel composerModel = adapter.getValueModel("composer");
 		ValueModel copyrightModel = adapter.getValueModel("copyright");
+		ValueModel filenameModel = adapter.getValueModel("filename");
 
 		titleField = BasicComponentFactory.createTextField(titleModel);
 		composerField = BasicComponentFactory.createTextField(composerModel);
 		copyrightField = BasicComponentFactory.createTextField(copyrightModel);
+		filenameField = BasicComponentFactory.createTextField(filenameModel);
+		
 		titleField.setColumns(TEXTFIELD_COLUMNS);
 		composerField.setColumns(TEXTFIELD_COLUMNS);
 		copyrightField.setColumns(TEXTFIELD_COLUMNS);
+		filenameField.setColumns(TEXTFIELD_COLUMNS);
+		filenameField.setEditable(false);
 
 		layoutComponents();
 
@@ -95,6 +100,7 @@ public class MainFrame extends JFrame {
 
 			if (readFile(selectedFile.getAbsolutePath())) {
 				filePath = selectedFile.toPath();
+				bean.setFilename(selectedFile.getName());
 				updateFields();
 			}
 			//toggleInputFields();
@@ -171,6 +177,19 @@ public class MainFrame extends JFrame {
 		gc.insets = new Insets(0, 0, 0, 0);
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(copyrightField, gc);
+		
+		// ////////// Next row///////////////////////////////////
+		gc.gridy++;
+		
+		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 0, 0, 10);
+		add(new JLabel("Filename"), gc);
+
+		gc.gridx = 1;
+		gc.insets = new Insets(0, 0, 0, 0);
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(filenameField, gc);
 
 
 		// ////////// Next row///////////////////////////////////

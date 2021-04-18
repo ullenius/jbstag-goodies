@@ -12,6 +12,8 @@ public class Bean {
 	private String title = "";
 	private String composer = "";
 	private String copyright = "";
+	private String filename = "";
+	
 	
 	public Bean() {
 	}
@@ -46,6 +48,16 @@ public class Bean {
 		changeSupport.firePropertyChange("copyright", oldValue, copyright);
 	}
 	
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		String oldValue = this.filename;
+		this.filename = filename;
+		changeSupport.firePropertyChange("filename", oldValue, filename);
+	}
+
 	public void addPropertyChangeListener(PropertyChangeListener x) {
 		changeSupport.addPropertyChangeListener(x);
 	}
@@ -53,14 +65,12 @@ public class Bean {
 	public void removePropertyChangeListener(PropertyChangeListener x) {
 		changeSupport.removePropertyChangeListener(x);
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "GbsTag [title=" + title + ", composer=" + composer + ", copyright=" + copyright + "]";
+		return "Bean [title=" + title + ", composer=" + composer + ", copyright=" + copyright + ", filename=" + filename
+				+ "]";
 	}
-	
-
 	
 	
 }
