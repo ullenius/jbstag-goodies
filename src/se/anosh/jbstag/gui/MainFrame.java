@@ -10,8 +10,8 @@ import java.nio.file.Path;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -23,7 +23,7 @@ import se.anosh.gbs.domain.ReadOnlySimpleGbsTag;
 import se.anosh.gbs.service.GbsFile;
 import se.anosh.jbstag.model.Bean;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JPanel {
 
 	private JTextField titleField;
 	private JTextField composerField;
@@ -31,8 +31,8 @@ public class MainFrame extends JFrame {
 	
 	private JButton saveButton;
 	private JButton openButton;
-	
 	private JTextField filenameField;
+	
 	private Bean bean;
 	private Path filePath; // FIXME unused
 	
@@ -42,7 +42,6 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 
-		super("Jbstag 0.2");
 		bean = new Bean();
 		bean.setTitle("Fooobar");
 		bean.setComposer("Foo composer");
@@ -55,8 +54,7 @@ public class MainFrame extends JFrame {
 		saveButton.addActionListener( (e -> {
 			System.out.println(bean);
 		}));
-
-
+		
 		// Bean adapter is an adapter that can create many value model objects for a single 
 		// bean. It is more efficient than the property adapter. The 'true' once again means 
 		// we want it to observe our bean for changes.
@@ -80,8 +78,7 @@ public class MainFrame extends JFrame {
 
 		layoutComponents();
 
-		setMinimumSize(new Dimension(600,300));
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setMinimumSize(new Dimension(300,300));
 		setVisible(true);
 	}
 	
@@ -126,10 +123,10 @@ public class MainFrame extends JFrame {
 			return false;
 		}
 	}
-		
+	
 
 	private void layoutComponents() {
-
+		
 		setLayout(new GridBagLayout());
 
 		GridBagConstraints gc = new GridBagConstraints();
