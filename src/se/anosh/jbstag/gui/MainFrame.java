@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -21,10 +22,13 @@ public class MainFrame extends JFrame {
 	private JTextField titleField;
 	private JTextField composerField;
 	private JTextField copyrightField;
-
+	
+	private JButton saveButton;
+	private JButton openButton;
+	
 	private JTextField filenameField;
 	private GbsTag bean;
-	
+
 	private static final int TEXTFIELD_COLUMNS = 30;
 
 	public MainFrame() {
@@ -35,6 +39,13 @@ public class MainFrame extends JFrame {
 		bean.setComposer("Minako Hamano");
 		bean.setCopyright("1993 Nintendo");
 		
+		saveButton = new JButton("Save");
+		openButton = new JButton("Open file");
+		saveButton.addActionListener( (e -> {
+			System.out.println(bean);
+		}));
+		
+
 
 		// Bean adapter is an adapter that can create many value model objects for a single 
 		// bean. It is more efficient than the property adapter. The 'true' once again means 
@@ -54,7 +65,7 @@ public class MainFrame extends JFrame {
 
 		layoutComponents();
 
-		setMinimumSize(new Dimension(500,200));
+		setMinimumSize(new Dimension(600,300));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
@@ -68,7 +79,6 @@ public class MainFrame extends JFrame {
 		// ////////// First row ///////////////////////////////////
 
 		gc.gridy = 0;
-
 		gc.weightx = 1;
 		gc.weighty = 0.1;
 
@@ -85,9 +95,8 @@ public class MainFrame extends JFrame {
 		add(titleField, gc);
 
 		// ////////// Next row///////////////////////////////////
-
 		gc.gridy++;
-		
+
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_END;
 		gc.insets = new Insets(0, 0, 0, 5);
@@ -97,11 +106,10 @@ public class MainFrame extends JFrame {
 		gc.insets = new Insets(0, 0, 0, 0);
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(composerField, gc);
-		
-		// ////////// Next row///////////////////////////////////
 
+		// ////////// Next row///////////////////////////////////
 		gc.gridy++;
-		
+
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_END;
 		gc.insets = new Insets(0, 0, 0, 5);
@@ -112,6 +120,20 @@ public class MainFrame extends JFrame {
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(copyrightField, gc);
 
+
+		// ////////// Next row///////////////////////////////////
+		gc.gridy++;
+		
+		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 0, 0, 10);
+		add(openButton, gc);
+
+		gc.gridx = 1;
+		gc.insets = new Insets(0, 0, 0, 0);
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(saveButton, gc);
+		
 	}
 
 }
