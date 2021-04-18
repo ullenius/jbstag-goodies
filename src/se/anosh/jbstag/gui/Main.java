@@ -2,22 +2,28 @@ package se.anosh.jbstag.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
+import se.anosh.jbstag.model.GbsBean;
+
 public class Main extends JFrame {
-	
 	
 	private MainFrame formPanel;
 	private JSplitPane splitPane;
-	private SongList songList;
+	private SongPanel songList;
+	private List<GbsBean> db = new LinkedList<>();
 	
 	public Main() {
-		
 		super("Jbstag 0.3");
-		formPanel = new MainFrame();
-		songList = new SongList();
+		
+		formPanel = new MainFrame(db);
+		songList = new SongPanel();
+		songList.setData(db);
+		formPanel.setAddFileListener( () -> songList.refresh()); // event listener
 		
 		setLayout(new BorderLayout());
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, songList);

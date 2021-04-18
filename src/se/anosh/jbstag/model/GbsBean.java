@@ -4,7 +4,7 @@ import java.beans.PropertyChangeListener;
 
 import com.jgoodies.binding.beans.ExtendedPropertyChangeSupport;
 
-public class Bean {
+public class GbsBean {
 	
 	private ExtendedPropertyChangeSupport changeSupport = new ExtendedPropertyChangeSupport(
 			this);
@@ -15,7 +15,7 @@ public class Bean {
 	private String filename = "";
 	
 	
-	public Bean() {
+	public GbsBean() {
 	}
 	
 	public String getTitle() {
