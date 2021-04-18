@@ -6,13 +6,10 @@ import java.awt.FlowLayout;
 import java.util.List;
 import java.util.Objects;
 
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
-import com.jgoodies.binding.adapter.BasicComponentFactory;
-import com.jgoodies.binding.list.SelectionInList;
+import javax.swing.table.TableColumnModel;
 
 import se.anosh.jbstag.model.GbsBean;
 
@@ -25,10 +22,17 @@ public class SongPanel extends JPanel {
 		tableModel = new SongTableModel();
 		
 		table = new JTable(tableModel);
+		
+		TableColumnModel columnModel = table.getColumnModel();
 		setLayout(new FlowLayout());
-		add(new JScrollPane(table), BorderLayout.CENTER);
-		setMinimumSize(new Dimension(100,200));
+		final JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setPreferredSize(new Dimension(900,300));
+		scrollPane.setMinimumSize(scrollPane.getPreferredSize());
+		add(scrollPane, BorderLayout.CENTER);
+
+		setPreferredSize(new Dimension(1000,300));
 		setVisible(true);
+		
 	}
 	
 	public void refresh() {

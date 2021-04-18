@@ -45,7 +45,7 @@ public class MainFrame extends JPanel {
 	
 	private final List<GbsBean> db;
 
-	private static final int TEXTFIELD_COLUMNS = 30;
+	private static final int TEXTFIELD_COLUMNS = 25;
 	
 	public MainFrame(List<GbsBean> database) {
 		this.db = Objects.requireNonNull(database);
@@ -86,7 +86,7 @@ public class MainFrame extends JPanel {
 
 		layoutComponents();
 
-		setMinimumSize(new Dimension(300,300));
+		setMinimumSize(new Dimension(420,300));
 		setVisible(true);
 	}
 	
@@ -215,11 +215,11 @@ public class MainFrame extends JPanel {
 		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 10);
+		gc.insets = new Insets(0, 0, 0, 0);
 		add(openButton, gc);
 
 		gc.gridx = 1;
-		gc.insets = new Insets(0, 0, 0, 0);
+		gc.insets = new Insets(1, 0, 0, 0);
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(saveButton, gc);
 		
