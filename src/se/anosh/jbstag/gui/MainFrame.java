@@ -7,11 +7,13 @@ import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Objects;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -21,9 +23,9 @@ import com.jgoodies.binding.value.ValueModel;
 
 import se.anosh.gbs.domain.ReadOnlySimpleGbsTag;
 import se.anosh.gbs.service.GbsFile;
-import se.anosh.jbstag.model.Bean;
+import se.anosh.jbstag.model.GbsBean;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JPanel {
 
 	private JTextField titleField;
 	private JTextField composerField;
@@ -31,19 +33,24 @@ public class MainFrame extends JFrame {
 	
 	private JButton saveButton;
 	private JButton openButton;
-	
 	private JTextField filenameField;
-	private Bean bean;
+	private AddGbsFileListener addFileListener;
+	
+	
+	private GbsBean bean;
+	
 	private Path filePath; // FIXME unused
 	
 	private ReadOnlySimpleGbsTag tag;
+	
+	private final List<GbsBean> db;
 
-	private static final int TEXTFIELD_COLUMNS = 30;
+	private static final int TEXTFIELD_COLUMNS = 25;
+	
+	public MainFrame(List<GbsBean> database) {
+		this.db = Objects.requireNonNull(database);
 
-	public MainFrame() {
-
-		super("Jbstag 0.2");
-		bean = new Bean();
+		bean = new GbsBean();
 		bean.setTitle("Fooobar");
 		bean.setComposer("Foo composer");
 		bean.setCopyright("Foobar AB");
@@ -55,8 +62,7 @@ public class MainFrame extends JFrame {
 		saveButton.addActionListener( (e -> {
 			System.out.println(bean);
 		}));
-
-
+		
 		// Bean adapter is an adapter that can create many value model objects for a single 
 		// bean. It is more efficient than the property adapter. The 'true' once again means 
 		// we want it to observe our bean for changes.
@@ -80,8 +86,7 @@ public class MainFrame extends JFrame {
 
 		layoutComponents();
 
-		setMinimumSize(new Dimension(600,300));
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setMinimumSize(new Dimension(420,300));
 		setVisible(true);
 	}
 	
@@ -100,18 +105,31 @@ public class MainFrame extends JFrame {
 
 			if (readFile(selectedFile.getAbsolutePath())) {
 				filePath = selectedFile.toPath();
-				bean.setFilename(selectedFile.getName());
-				updateFields();
+				updateFields(selectedFile.getName());
 			}
 			//toggleInputFields();
 			//toggleSaveButton();
 		}
 	}
 	
-	private void updateFields() {
+	// Event listener
+	public void setAddFileListener(AddGbsFileListener listener) {
+		this.addFileListener = listener;
+	}
+	
+	private void updateFields(String filename) {
+		GbsBean newBean = new GbsBean();
+		newBean.setComposer(tag.getAuthor());
+		newBean.setCopyright(tag.getCopyright());
+		newBean.setTitle(tag.getTitle());
+		newBean.setFilename(filename);
+		db.add(newBean);
+		addFileListener.refresh();
+		
 		bean.setComposer(tag.getAuthor());
 		bean.setTitle(tag.getTitle());
 		bean.setCopyright(tag.getCopyright());
+		bean.setFilename(newBean.getFilename());
 	}
 	
 	private boolean readFile(final String filename) {
@@ -126,10 +144,10 @@ public class MainFrame extends JFrame {
 			return false;
 		}
 	}
-		
+	
 
 	private void layoutComponents() {
-
+		
 		setLayout(new GridBagLayout());
 
 		GridBagConstraints gc = new GridBagConstraints();
@@ -197,11 +215,11 @@ public class MainFrame extends JFrame {
 		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 10);
+		gc.insets = new Insets(0, 0, 0, 0);
 		add(openButton, gc);
 
 		gc.gridx = 1;
-		gc.insets = new Insets(0, 0, 0, 0);
+		gc.insets = new Insets(1, 0, 0, 0);
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(saveButton, gc);
 		

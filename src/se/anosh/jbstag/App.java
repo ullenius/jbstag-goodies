@@ -2,6 +2,7 @@ package se.anosh.jbstag;
 
 import javax.swing.SwingUtilities;
 
+import se.anosh.jbstag.gui.Main;
 import se.anosh.jbstag.gui.MainFrame;
 
 public class App {
@@ -11,7 +12,7 @@ public class App {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new MainFrame();
+				new Main();
 			}
 		});	
 		
