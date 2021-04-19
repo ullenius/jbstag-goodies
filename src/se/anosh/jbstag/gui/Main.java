@@ -24,6 +24,9 @@ public class Main extends JFrame {
 		songList = new SongPanel();
 		songList.setData(db);
 		formPanel.setAddFileListener( () -> songList.refresh()); // event listener
+		songList.setSongTableListener( (n) -> {
+			formPanel.showSong(db.get(n));
+		});
 		
 		setLayout(new BorderLayout());
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, songList);
@@ -36,6 +39,6 @@ public class Main extends JFrame {
 		setResizable(false);
 		
 	}
-	
+		
 
 }

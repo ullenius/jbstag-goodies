@@ -1,6 +1,7 @@
 package se.anosh.jbstag.model;
 
 import java.beans.PropertyChangeListener;
+import java.util.Objects;
 
 import com.jgoodies.binding.beans.ExtendedPropertyChangeSupport;
 
@@ -71,6 +72,25 @@ public class GbsBean {
 		return "Bean [title=" + title + ", composer=" + composer + ", copyright=" + copyright + ", filename=" + filename
 				+ "]";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(composer, copyright, filename, title);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GbsBean other = (GbsBean) obj;
+		return Objects.equals(composer, other.composer) && Objects.equals(copyright, other.copyright)
+				&& Objects.equals(filename, other.filename) && Objects.equals(title, other.title);
+	}
+	
 	
 	
 }
