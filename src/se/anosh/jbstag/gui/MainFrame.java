@@ -17,8 +17,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.beans.BeanAdapter;
+import com.jgoodies.binding.value.Trigger;
 import com.jgoodies.binding.value.ValueModel;
 
 import se.anosh.gbs.domain.ReadOnlySimpleGbsTag;
@@ -35,9 +37,10 @@ public class MainFrame extends JPanel {
 	private JButton openButton;
 	private JTextField filenameField;
 	private AddGbsFileListener addFileListener;
+	private final Trigger trigger;
 
-
-	private GbsBean bean;
+	//private GbsBean bean;
+	private PresentationModel adapter;
 
 	private Path filePath; // FIXME unused
 
@@ -50,28 +53,22 @@ public class MainFrame extends JPanel {
 	public MainFrame(List<GbsBean> database) {
 		this.db = Objects.requireNonNull(database);
 
-		bean = new GbsBean();
+		GbsBean bean = new GbsBean();
 		bean.setTitle("Fooobar");
 		bean.setComposer("Foo composer");
 		bean.setCopyright("Foobar AB");
 
-		saveButton = new JButton("Save");
-		openButton = new JButton("Open file");
-
-		openButton.addActionListener( (e) -> openFile() );
-		saveButton.addActionListener( (e -> {
-			System.out.println(bean);
-		}));
-
 		// Bean adapter is an adapter that can create many value model objects for a single 
 		// bean. It is more efficient than the property adapter. The 'true' once again means 
 		// we want it to observe our bean for changes.
-		BeanAdapter adapter = new BeanAdapter(bean, true);
+	//	BeanAdapter adapter = new BeanAdapter(bean, true);
+		this.trigger = new Trigger();
+		adapter = new PresentationModel(bean, trigger);
 
-		ValueModel titleModel = adapter.getValueModel("title");
-		ValueModel composerModel = adapter.getValueModel("composer");
-		ValueModel copyrightModel = adapter.getValueModel("copyright");
-		ValueModel filenameModel = adapter.getValueModel("filename");
+		ValueModel titleModel = adapter.getBufferedModel("title");
+		ValueModel composerModel = adapter.getBufferedModel("composer");
+		ValueModel copyrightModel = adapter.getBufferedModel("copyright");
+		ValueModel filenameModel = adapter.getBufferedModel("filename");
 
 		titleField = BasicComponentFactory.createTextField(titleModel);
 		composerField = BasicComponentFactory.createTextField(composerModel);
@@ -84,6 +81,21 @@ public class MainFrame extends JPanel {
 		filenameField.setColumns(TEXTFIELD_COLUMNS);
 		filenameField.setEditable(false);
 
+		// bind buttons to actions
+		saveButton = new JButton("Save");
+		openButton = new JButton("Open file");
+
+		openButton.addActionListener( (e) -> {
+			System.out.println("Flushing/rollback commits");
+			trigger.triggerFlush();
+			openFile();
+		});	
+		saveButton.addActionListener( (e -> {
+			System.out.println("Committing changes to bean");
+			System.out.println(bean);
+			trigger.triggerCommit();
+		}));
+		
 		layoutComponents();
 
 		setMinimumSize(new Dimension(420,300));
@@ -126,10 +138,15 @@ public class MainFrame extends JPanel {
 		db.add(newBean);
 		addFileListener.refresh();
 
+		adapter.setBean(newBean);
+		trigger.triggerCommit();
+		
+		/*
 		bean.setComposer(tag.getAuthor());
 		bean.setTitle(tag.getTitle());
 		bean.setCopyright(tag.getCopyright());
 		bean.setFilename(newBean.getFilename());
+		*/
 	}
 
 	private boolean readFile(final String filename) {
@@ -147,12 +164,8 @@ public class MainFrame extends JPanel {
 
 	public void showSong(GbsBean show) {
 		System.out.println("Displaying " + show);
-		if (!show.equals(bean)) {
-			bean.setComposer(show.getComposer());
-			bean.setTitle(show.getTitle());
-			bean.setFilename(show.getFilename());
-			bean.setCopyright(show.getCopyright());
-		}
+			adapter.setBean(show);
+			trigger.triggerCommit();
 	}
 
 
