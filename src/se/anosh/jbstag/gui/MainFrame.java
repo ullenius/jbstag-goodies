@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,8 +19,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
-import com.jgoodies.binding.adapter.ComboBoxAdapter;
-import com.jgoodies.binding.beans.BeanAdapter;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.beans.PropertyConnector;
 import com.jgoodies.binding.value.Trigger;
@@ -43,20 +40,11 @@ public class MainFrame extends JPanel {
 	private AddGbsFileListener addFileListener;
 	private final Trigger trigger;
 	
-	private ValueModel titleModel;
-	private ValueModel composerModel;
-	private ValueModel copyrightModel;
-	private ValueModel filenameModel;
+	private Path filePath;
 	
 	private ValueModel beanProperty;
 
-	//private GbsBean bean;
-	private PresentationModel adapter;
-
-	private Path filePath; // FIXME unused
-
 	private ReadOnlySimpleGbsTag tag;
-
 	private final List<GbsBean> db;
 
 	private static final int TEXTFIELD_COLUMNS = 25;
@@ -73,14 +61,14 @@ public class MainFrame extends JPanel {
 		// bean. It is more efficient than the property adapter. The 'true' once again means 
 		// we want it to observe our bean for changes.
 		this.trigger = new Trigger();
-		adapter = new PresentationModel(bean, trigger); // PRESENTATION MODEL
+		PresentationModel adapter = new PresentationModel(bean, trigger); // PRESENTATION MODEL
 		beanProperty = new PropertyAdapter(adapter, "bean");
 		
 		// creating ValueModels
-		titleModel = adapter.getBufferedModel("title");
-		composerModel = adapter.getBufferedModel("composer");
-		copyrightModel = adapter.getBufferedModel("copyright");
-		filenameModel = adapter.getBufferedModel("filename");
+		ValueModel titleModel = adapter.getBufferedModel("title");
+		ValueModel composerModel = adapter.getBufferedModel("composer");
+		ValueModel copyrightModel = adapter.getBufferedModel("copyright");
+		ValueModel filenameModel = adapter.getBufferedModel("filename");
 
 		titleField = BasicComponentFactory.createTextField(titleModel);
 		composerField = BasicComponentFactory.createTextField(composerModel);
@@ -157,14 +145,6 @@ public class MainFrame extends JPanel {
 		
 		beanProperty.setValue(newBean);
 		trigger.triggerCommit();
-
-		/*
-		titleModel.setValue(tag.getAuthor());
-		composerModel.setValue(tag.getAuthor());
-		copyrightModel.setValue(tag.getCopyright());
-		filenameModel.setValue(filename);
-		trigger.triggerCommit();
-		*/
 	}
 
 	private boolean readFile(final String filename) {
