@@ -41,7 +41,6 @@ public class MainFrame extends JPanel {
 	private final Trigger trigger;
 	
 	private Path filePath;
-	
 	private ValueModel beanProperty;
 
 	private ReadOnlySimpleGbsTag tag;
@@ -57,9 +56,6 @@ public class MainFrame extends JPanel {
 		bean.setComposer("Foo composer");
 		bean.setCopyright("Foobar AB");
 
-		// Bean adapter is an adapter that can create many value model objects for a single 
-		// bean. It is more efficient than the property adapter. The 'true' once again means 
-		// we want it to observe our bean for changes.
 		this.trigger = new Trigger();
 		PresentationModel adapter = new PresentationModel(bean, trigger); // PRESENTATION MODEL
 		beanProperty = new PropertyAdapter(adapter, "bean");
@@ -124,8 +120,6 @@ public class MainFrame extends JPanel {
 				filePath = selectedFile.toPath();
 				updateFields(selectedFile.getName());
 			}
-			//toggleInputFields();
-			//toggleSaveButton();
 		}
 	}
 
@@ -153,7 +147,6 @@ public class MainFrame extends JPanel {
 			tag = reader.getTag();
 			return true;
 		} catch (IOException ex) {
-			//showErrorMessageBox("Unable to open file: " + ex.getMessage());
 			//showErrorMessageBox("Unable to open file: " + ex.getMessage());
 			ex.getMessage();
 			return false;
