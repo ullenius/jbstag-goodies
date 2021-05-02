@@ -34,7 +34,7 @@ public class Main extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		add(splitPane, BorderLayout.CENTER);
-		//setSize(800, 600);
+		setSize(800, 600);
 		setVisible(true);
 		setResizable(false);
 		
