@@ -30,11 +30,14 @@ public class Main extends JFrame {
 		
 		setLayout(new BorderLayout());
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, songList);
-		setMinimumSize(new Dimension(1400,600));
+		splitPane.setDividerLocation(1000);
+		splitPane.setResizeWeight(1);
+		splitPane.setDividerSize(1);
+		setMinimumSize(new Dimension(1500,500));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		add(splitPane, BorderLayout.CENTER);
-		setSize(800, 600);
+		//setSize(800, 600);
 		setVisible(true);
 		setResizable(false);
 		

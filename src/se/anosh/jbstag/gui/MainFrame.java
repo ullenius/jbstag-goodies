@@ -177,7 +177,6 @@ public class MainFrame extends JPanel {
 		JPanel panel = new JPanel(layout);
 		panel.setVisible(true);
 		add(panel);
-		
 
 //		PanelBuilder builder = new PanelBuilder(layout, new FormDebugPanel());
 		PanelBuilder builder = new PanelBuilder(layout, new FormDebugPanel());
@@ -204,88 +203,9 @@ public class MainFrame extends JPanel {
 		builder.add(openButton,	    cc.xy(1, 9));
 		builder.add(saveButton,	    cc.xy(3, 9));
 		
-		
 		add(builder.getPanel());
 		
 	}
 
-	private void layoutComponents() {
-
-		setLayout(new GridBagLayout());
-
-		GridBagConstraints gc = new GridBagConstraints();
-
-		// ////////// First row ///////////////////////////////////
-
-		gc.gridy = 0;
-		gc.weightx = 1;
-		gc.weighty = 0.1;
-
-		gc.gridx = 0;
-		gc.fill = GridBagConstraints.NONE;
-		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(new JLabel("Title"), gc);
-
-		gc.gridx = 1;
-		gc.gridy = 0;
-		gc.insets = new Insets(0, 0, 0, 0);
-		gc.anchor = GridBagConstraints.LINE_START;
-		add(titleField, gc);
-
-		// ////////// Next row///////////////////////////////////
-		gc.gridy++;
-
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(new JLabel("Composer"), gc);
-
-		gc.gridx = 1;
-		gc.insets = new Insets(0, 0, 0, 0);
-		gc.anchor = GridBagConstraints.LINE_START;
-		add(composerField, gc);
-
-		// ////////// Next row///////////////////////////////////
-		gc.gridy++;
-
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(new JLabel("Copyright"), gc);
-
-		gc.gridx = 1;
-		gc.insets = new Insets(0, 0, 0, 0);
-		gc.anchor = GridBagConstraints.LINE_START;
-		add(copyrightField, gc);
-
-		// ////////// Next row///////////////////////////////////
-		gc.gridy++;
-
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 10);
-		add(new JLabel("Filename"), gc);
-
-		gc.gridx = 1;
-		gc.insets = new Insets(0, 0, 0, 0);
-		gc.anchor = GridBagConstraints.LINE_START;
-		add(filenameField, gc);
-
-
-		// ////////// Next row///////////////////////////////////
-		gc.gridy++;
-
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 0);
-		add(openButton, gc);
-
-		gc.gridx = 1;
-		gc.insets = new Insets(1, 0, 0, 0);
-		gc.anchor = GridBagConstraints.LINE_START;
-		add(saveButton, gc);
-
-	}
 
 }
