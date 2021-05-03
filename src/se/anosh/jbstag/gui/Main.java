@@ -19,7 +19,6 @@ public class Main extends JFrame {
 	
 	public Main() {
 		super("Jbstag 0.3");
-		
 		formPanel = new MainFrame(db);
 		songList = new SongPanel();
 		songList.setData(db);
@@ -27,21 +26,18 @@ public class Main extends JFrame {
 		songList.setSongTableListener( (n) -> {
 			formPanel.showSong(db.get(n));
 		});
-		
 		setLayout(new BorderLayout());
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, songList);
-		splitPane.setDividerLocation(1000);
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel.buildFormPanel(), songList);
 		splitPane.setResizeWeight(1);
 		splitPane.setDividerSize(1);
-		setMinimumSize(new Dimension(1500,500));
+		setMinimumSize(new Dimension(1500,400));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		add(splitPane, BorderLayout.CENTER);
-		//setSize(800, 600);
 		setVisible(true);
 		setResizable(false);
-		
 	}
+	
 		
 
 }

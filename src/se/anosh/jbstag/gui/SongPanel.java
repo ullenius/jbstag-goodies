@@ -23,7 +23,6 @@ public class SongPanel extends JPanel {
 	
 	public SongPanel() {
 		tableModel = new SongTableModel();
-		
 		table = new JTable(tableModel);
 		
 		TableColumnModel columnModel = table.getColumnModel();

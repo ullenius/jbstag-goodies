@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -103,10 +104,8 @@ public class MainFrame extends JPanel {
 			addFileListener.refresh();
 		}));
 		
-		layoutComponentsImproved();
-
-		setMinimumSize(new Dimension(420,300));
-		setVisible(true);
+		//setMinimumSize(new Dimension(420,300));
+		//setVisible(true);
 	}
 
 
@@ -165,12 +164,13 @@ public class MainFrame extends JPanel {
 			System.out.println("Displaying " + show);
 	}
 
-	
-	private void layoutComponentsImproved() {
+	JPanel buildFormPanel() {
+		
+		JLabel gameboy = new JLabel(new ImageIcon(getClass().getResource("/gameboy-tahsin.png")));
 		
 		FormLayout layout = new FormLayout(
-				"right:pref, 30dlu, left:pref:grow",							// 3 columns
-				"pref, 10dlu, pref, 10dlu, pref, 10dlu, pref, 20dlu, pref");		// 9 rows
+				"right:pref, $lcg, left:pref:grow",							// 3 columns
+				"pref, 10dlu, pref, 10dlu, pref, 10dlu, pref, 20dlu, pref, pref");		// 10 rows
 		layout.setColumnGroups( new int[][] { { 1, 3 } } );
 		layout.setRowGroups( new int[][] { { 2, 4, 6  } } );
 
@@ -182,29 +182,23 @@ public class MainFrame extends JPanel {
 		PanelBuilder builder = new PanelBuilder(layout, new FormDebugPanel());
 		builder.border(Borders.DIALOG); // replaces the deprecated setDefaultDialogBorder();
 
-
-		// Obtain a reusable constraints object to place components in the grid.
 		CellConstraints cc = new CellConstraints();
 
-		// Fill the grid with components; the builder can create
-		// frequently used components, e.g. separators and labels.
-
-		// Add a titled separator to cell (1, 1) that spans 7 columns.
-		builder.addLabel("Title",       		cc.xy (1,  1));
-		builder.add(titleField,         cc.xy(3, 1));
-		builder.addLabel("Composer",       		cc.xy (1,  3));
-		builder.add(composerField,         cc.xy(3, 3));
-		builder.addLabel("Copyright",       	cc.xy (1,  5));
+		builder.addLabel("Title",       	cc.xy(1, 1));
+		builder.add(titleField,         	cc.xy(3, 1));
+		builder.addLabel("Composer",       	cc.xy(1, 3));
+		builder.add(composerField,         	cc.xy(3, 3));
+		builder.addLabel("Copyright",       cc.xy(1, 5));
 		builder.add(copyrightField,         cc.xy(3, 5));
 		
-		builder.addLabel("Filename",			cc.xy(1, 7));
+		builder.addLabel("Filename",		cc.xy(1, 7));
 		builder.add(filenameField,			cc.xy(3, 7));
 		
-		builder.add(openButton,	    cc.xy(1, 9));
-		builder.add(saveButton,	    cc.xy(3, 9));
+		builder.add(openButton,	    		cc.xy(1, 9));
+		builder.add(saveButton,	    		cc.xy(3, 9));
 		
-		add(builder.getPanel());
-		
+		builder.add(gameboy,				cc.xy(3, 10));
+		return builder.getPanel();
 	}
 
 
