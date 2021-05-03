@@ -1,9 +1,7 @@
 package se.anosh.jbstag.gui;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -13,8 +11,8 @@ import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -36,6 +34,8 @@ import se.anosh.gbs.service.GbsFile;
 import se.anosh.jbstag.model.GbsBean;
 
 public class MainFrame extends JPanel {
+	
+	private static final long serialVersionUID = 0xBEEF;
 
 	private JTextField titleField;
 	private JTextField composerField;
@@ -89,6 +89,7 @@ public class MainFrame extends JPanel {
 		PropertyConnector.connect(adapter, "buffering", saveButton, "enabled");
 		
 		openButton = new JButton("Open file");
+		saveButton.setPreferredSize(openButton.getPreferredSize());
 
 		openButton.addActionListener( (e) -> {
 			System.out.println("Flushing/rollback commits");
@@ -103,9 +104,6 @@ public class MainFrame extends JPanel {
 			System.out.println("Valuemodel title: " + titleModel.getValue());
 			addFileListener.refresh();
 		}));
-		
-		//setMinimumSize(new Dimension(420,300));
-		//setVisible(true);
 	}
 
 
@@ -128,7 +126,6 @@ public class MainFrame extends JPanel {
 		}
 	}
 
-	// Event listener
 	public void setAddFileListener(AddGbsFileListener listener) {
 		this.addFileListener = listener;
 	}
@@ -151,11 +148,14 @@ public class MainFrame extends JPanel {
 			GbsFile reader = new GbsFile(filename);
 			tag = reader.getTag();
 			return true;
-		} catch (IOException ex) {
-			//showErrorMessageBox("Unable to open file: " + ex.getMessage());
-			ex.getMessage();
+		} catch (IOException | IllegalArgumentException ex) {
+			showErrorMessageBox("Unable to open file: " + ex.getMessage());
 			return false;
 		}
+	}
+	
+	private void showErrorMessageBox(String message) {
+		JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void showSong(GbsBean show) {
@@ -167,10 +167,17 @@ public class MainFrame extends JPanel {
 	JPanel buildFormPanel() {
 		
 		JLabel gameboy = new JLabel(new ImageIcon(getClass().getResource("/gameboy-tahsin.png")));
+		gameboy.setToolTipText("GBS Tagger");
+		gameboy.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				credits();
+			}
+		});
 		
 		FormLayout layout = new FormLayout(
-				"right:pref, $lcg, left:pref:grow",							// 3 columns
-				"pref, 10dlu, pref, 10dlu, pref, 10dlu, pref, 20dlu, pref, pref");		// 10 rows
+				"right:pref, $lcg, left:pref:grow",	// 3 columns
+				"pref, 10dlu, pref, 10dlu, pref, 10dlu, pref, 20dlu, pref, $lcg, pref");// 11 rows
 		layout.setColumnGroups( new int[][] { { 1, 3 } } );
 		layout.setRowGroups( new int[][] { { 2, 4, 6  } } );
 
@@ -178,8 +185,8 @@ public class MainFrame extends JPanel {
 		panel.setVisible(true);
 		add(panel);
 
-//		PanelBuilder builder = new PanelBuilder(layout, new FormDebugPanel());
 		PanelBuilder builder = new PanelBuilder(layout, new FormDebugPanel());
+		//PanelBuilder builder = new PanelBuilder(layout);
 		builder.border(Borders.DIALOG); // replaces the deprecated setDefaultDialogBorder();
 
 		CellConstraints cc = new CellConstraints();
@@ -197,8 +204,15 @@ public class MainFrame extends JPanel {
 		builder.add(openButton,	    		cc.xy(1, 9));
 		builder.add(saveButton,	    		cc.xy(3, 9));
 		
-		builder.add(gameboy,				cc.xy(3, 10));
+		builder.add(gameboy,				cc.xyw(2, 11, 2));
 		return builder.getPanel();
+	}
+	
+	private void credits() {
+		JOptionPane.showMessageDialog(this, "GBS Tagger made by Anosh <git@anosh.se> in 2019-2021.\n\n" +
+				"Licensed under GNU GPL version 3, see enclosed file COPYING for full licence.\n\n"
+				+ "Uses the gbs-lib library which is licensed under LGPL 2.1\n\n"
+				+ "Image by Tahsin Tahil (Creative Commons Attribution 3.0 Unported)", "About GBS Tagger", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 
