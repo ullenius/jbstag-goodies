@@ -4,7 +4,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,7 +46,6 @@ public class MainFrame extends JPanel {
 	private AddGbsFileListener addFileListener;
 	private final Trigger trigger;
 	
-	private Path filePath;
 	private ValueModel beanProperty;
 
 	private ReadOnlySimpleGbsTag tag;
@@ -115,12 +113,11 @@ public class MainFrame extends JPanel {
 		fileChooser.addChoosableFileFilter(filter);
 
 		int result = fileChooser.showOpenDialog(null);
-
+		
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
 
 			if (readFile(selectedFile.getAbsolutePath())) {
-				filePath = selectedFile.toPath();
 				updateFields(selectedFile.getName());
 			}
 		}
