@@ -201,7 +201,7 @@ public class MainFrame extends JPanel {
 		builder.add(openButton,	    		cc.xy(1, 9));
 		builder.add(saveButton,	    		cc.xy(3, 9));
 		
-		builder.add(gameboy,				cc.xyw(2, 11, 2));
+		builder.add(gameboy,				cc.xy(3, 11, CellConstraints.FILL, CellConstraints.CENTER));
 		return builder.getPanel();
 	}
 	
