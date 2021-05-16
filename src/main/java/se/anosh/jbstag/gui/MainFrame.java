@@ -59,7 +59,7 @@ public class MainFrame extends JPanel {
 	public MainFrame(SelectionInList<GbsBean> tableSelection, List<GbsBean> database) {
 		this.db = Objects.requireNonNull(database);
 		this.trigger = new Trigger();
-		PresentationModel<GbsBean> adapter = new PresentationModel<>(tableSelection, trigger); // PRESENTATION MODEL
+		PresentationModel<GbsBean> adapter = new PresentationModel<>(tableSelection, trigger);
 		beanProperty = new PropertyAdapter<Object>(adapter, "bean");
 		
 		ValueModel titleModel = adapter.getBufferedModel("title"); //DRY

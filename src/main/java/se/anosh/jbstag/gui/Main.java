@@ -16,7 +16,7 @@ public class Main extends JFrame {
 	private MainFrame formPanel;
 	private JSplitPane splitPane;
 	private SongPanel songList;
-	private List<GbsBean> db = new LinkedList<>();
+	private final List<GbsBean> db = new LinkedList<>();
 	
 	public Main() {
 		super("Jbstag 0.9");
