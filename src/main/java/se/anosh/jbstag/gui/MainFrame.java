@@ -25,7 +25,7 @@ import com.jgoodies.binding.value.Trigger;
 import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.debug.FormDebugPanel;
-import com.jgoodies.forms.factories.Borders;
+import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -35,8 +35,9 @@ import se.anosh.gbs.service.GbsFile;
 import se.anosh.jbstag.model.GbsBean;
 
 public class MainFrame extends JPanel {
-	
+
 	private static final long serialVersionUID = 0xBEEF;
+	private static final boolean DEBUG = true;
 
 	private JTextField titleField;
 	private JTextField composerField;
@@ -57,27 +58,12 @@ public class MainFrame extends JPanel {
 
 	public MainFrame(SelectionInList<GbsBean> tableSelection, List<GbsBean> database) {
 		this.db = Objects.requireNonNull(database);
-
 		this.trigger = new Trigger();
 		PresentationModel adapter = new PresentationModel(tableSelection, trigger); // PRESENTATION MODEL
 		beanProperty = new PropertyAdapter(adapter, "bean");
 		
-		// creating ValueModels
-		ValueModel titleModel = adapter.getBufferedModel("title");
-		ValueModel composerModel = adapter.getBufferedModel("composer");
-		ValueModel copyrightModel = adapter.getBufferedModel("copyright");
-		ValueModel filenameModel = adapter.getBufferedModel("filename");
-
-		titleField = BasicComponentFactory.createTextField(titleModel);
-		composerField = BasicComponentFactory.createTextField(composerModel);
-		copyrightField = BasicComponentFactory.createTextField(copyrightModel);
-		filenameField = BasicComponentFactory.createTextField(filenameModel);
-
-		titleField.setColumns(TEXTFIELD_COLUMNS);
-		composerField.setColumns(TEXTFIELD_COLUMNS);
-		copyrightField.setColumns(TEXTFIELD_COLUMNS);
-		filenameField.setColumns(TEXTFIELD_COLUMNS);
-		filenameField.setEditable(false);
+		ValueModel titleModel = adapter.getBufferedModel("title"); //DRY
+		createFields(adapter);
 
 		// bind buttons to actions
 		saveButton = new JButton("Save");
@@ -95,8 +81,27 @@ public class MainFrame extends JPanel {
 		saveButton.addActionListener( (e -> {
 			trigger.triggerCommit();
 			Logger.debug("Committing changes to bean");
-			Logger.debug("Valuemodel title: " + titleModel.getValue());
+			Logger.debug("Valuemodel title: {}", titleModel.getValue());
 		}));
+	}
+
+	private void createFields(PresentationModel adapter) {
+		// creating ValueModels
+		ValueModel titleModel = adapter.getBufferedModel("title");
+		ValueModel composerModel = adapter.getBufferedModel("composer");
+		ValueModel copyrightModel = adapter.getBufferedModel("copyright");
+		ValueModel filenameModel = adapter.getBufferedModel("filename");
+
+		titleField = BasicComponentFactory.createTextField(titleModel);
+		composerField = BasicComponentFactory.createTextField(composerModel);
+		copyrightField = BasicComponentFactory.createTextField(copyrightModel);
+		filenameField = BasicComponentFactory.createTextField(filenameModel);
+
+		titleField.setColumns(TEXTFIELD_COLUMNS);
+		composerField.setColumns(TEXTFIELD_COLUMNS);
+		copyrightField.setColumns(TEXTFIELD_COLUMNS);
+		filenameField.setColumns(TEXTFIELD_COLUMNS);
+		filenameField.setEditable(false);
 	}
 
 
@@ -146,7 +151,7 @@ public class MainFrame extends JPanel {
 			return false;
 		}
 	}
-	
+
 	private void showErrorMessageBox(String message) {
 		JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
@@ -172,27 +177,29 @@ public class MainFrame extends JPanel {
 		panel.setVisible(true);
 		add(panel);
 
-		PanelBuilder builder = new PanelBuilder(layout, new FormDebugPanel());
-		//PanelBuilder builder = new PanelBuilder(layout);
-		builder.border(Borders.DIALOG); // replaces the deprecated setDefaultDialogBorder();
-
+		PanelBuilder builder = createPanelBuilder(layout);
+		builder.border(Paddings.DIALOG); // replaces the deprecated setDefaultDialogBorder();
 		CellConstraints cc = new CellConstraints();
 
-		builder.addLabel("Title",       	cc.xy(1, 1));
-		builder.add(titleField,         	cc.xy(3, 1));
-		builder.addLabel("Composer",       	cc.xy(1, 3));
-		builder.add(composerField,         	cc.xy(3, 3));
-		builder.addLabel("Copyright",       cc.xy(1, 5));
-		builder.add(copyrightField,         cc.xy(3, 5));
+		builder.addLabel("Title",    cc.xy(1, 1));
+		builder.add(titleField,         			 cc.xy(3, 1));
+		builder.addLabel("Composer", cc.xy(1, 3));
+		builder.add(composerField,         			 cc.xy(3, 3));
+		builder.addLabel("Copyright", cc.xy(1, 5));
+		builder.add(copyrightField,        			 cc.xy(3, 5));
 		
-		builder.addLabel("Filename",		cc.xy(1, 7));
-		builder.add(filenameField,			cc.xy(3, 7));
+		builder.addLabel("Filename", cc.xy(1, 7));
+		builder.add(filenameField,					 cc.xy(3, 7));
 		
-		builder.add(openButton,	    		cc.xy(1, 9));
-		builder.add(saveButton,	    		cc.xy(3, 9));
+		builder.add(openButton,	    				 cc.xy(1, 9));
+		builder.add(saveButton,	    				 cc.xy(3, 9));
 		
-		builder.add(gameboy,				cc.xy(3, 11, CellConstraints.FILL, CellConstraints.CENTER));
+		builder.add(gameboy,					 cc.xy(3, 11, CellConstraints.FILL, CellConstraints.CENTER));
 		return builder.getPanel();
+	}
+
+	private PanelBuilder createPanelBuilder(FormLayout layout) {
+		return DEBUG ? new PanelBuilder(layout, new FormDebugPanel()) : new PanelBuilder(layout);
 	}
 	
 	private void credits() {
