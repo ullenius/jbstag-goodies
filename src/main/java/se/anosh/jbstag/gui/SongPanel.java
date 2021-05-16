@@ -3,10 +3,10 @@ package se.anosh.jbstag.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.Objects;
 
 import javax.swing.*;
 
+import org.pmw.tinylog.Logger;
 import se.anosh.jbstag.model.GbsBean;
 
 public class SongPanel extends JPanel {
@@ -30,10 +30,9 @@ public class SongPanel extends JPanel {
 		setVisible(true);
 	}
 
-	@Deprecated
 	public void refresh() {
 		tableModel.fireTableDataChanged();
-		System.out.println("Refresh was called");
+		Logger.debug("Refresh was called");
 	}
 
 }

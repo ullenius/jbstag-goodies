@@ -29,6 +29,7 @@ import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
+import org.pmw.tinylog.Logger;
 import se.anosh.gbs.domain.ReadOnlySimpleGbsTag;
 import se.anosh.gbs.service.GbsFile;
 import se.anosh.jbstag.model.GbsBean;
@@ -86,16 +87,15 @@ public class MainFrame extends JPanel {
 		saveButton.setPreferredSize(openButton.getPreferredSize());
 
 		openButton.addActionListener( (e) -> {
-			System.out.println("Flushing/rollback commits");
+			Logger.debug("Flushing/rollback commits");
 			trigger.triggerFlush();
 			openFile();
 		});	
 		saveButton.setEnabled(Boolean.FALSE);
 		saveButton.addActionListener( (e -> {
 			trigger.triggerCommit();
-			System.out.println("Committing changes to bean");
-			//System.out.println(bean);
-			System.out.println("Valuemodel title: " + titleModel.getValue());
+			Logger.debug("Committing changes to bean");
+			Logger.debug("Valuemodel title: " + titleModel.getValue());
 		}));
 	}
 
@@ -149,12 +149,6 @@ public class MainFrame extends JPanel {
 	
 	private void showErrorMessageBox(String message) {
 		JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-	}
-
-	public void showSong(GbsBean show) {
-			beanProperty.setValue(show);
-			trigger.triggerCommit();
-			System.out.println("Displaying " + show);
 	}
 
 	JPanel buildFormPanel() {
