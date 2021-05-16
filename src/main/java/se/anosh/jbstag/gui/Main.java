@@ -5,9 +5,10 @@ import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
+import javax.swing.*;
 
+import com.jgoodies.binding.adapter.SingleListSelectionAdapter;
+import com.jgoodies.binding.list.SelectionInList;
 import se.anosh.jbstag.model.GbsBean;
 
 public class Main extends JFrame {
@@ -18,9 +19,13 @@ public class Main extends JFrame {
 	private List<GbsBean> db = new LinkedList<>();
 	
 	public Main() {
-		super("Jbstag 0.3");
-		formPanel = new MainFrame(db);
-		songList = new SongPanel();
+		super("Jbstag 0.9");
+		SelectionInList<GbsBean> tableSelection = new SelectionInList<>(db);
+		ListSelectionModel listSelectionModel = new SingleListSelectionAdapter(
+				tableSelection.getSelectionIndexHolder());
+
+		formPanel = new MainFrame(tableSelection, db);
+		songList = new SongPanel(tableSelection, listSelectionModel);
 		songList.setData(db);
 		formPanel.setAddFileListener( () -> songList.refresh()); // event listener
 		songList.setSongTableListener( (n) -> {

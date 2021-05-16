@@ -20,6 +20,7 @@ import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.beans.PropertyConnector;
+import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.Trigger;
 import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.forms.builder.PanelBuilder;
@@ -53,16 +54,17 @@ public class MainFrame extends JPanel {
 
 	private static final int TEXTFIELD_COLUMNS = 25;
 
-	public MainFrame(List<GbsBean> database) {
+	public MainFrame(SelectionInList<GbsBean> tableSelection, List<GbsBean> database) {
 		this.db = Objects.requireNonNull(database);
 
+		/*
 		GbsBean bean = new GbsBean();
 		bean.setTitle("Fooobar");
 		bean.setComposer("Foo composer");
 		bean.setCopyright("Foobar AB");
-
+*/
 		this.trigger = new Trigger();
-		PresentationModel adapter = new PresentationModel(bean, trigger); // PRESENTATION MODEL
+		PresentationModel adapter = new PresentationModel(tableSelection, trigger); // PRESENTATION MODEL
 		beanProperty = new PropertyAdapter(adapter, "bean");
 		
 		// creating ValueModels
@@ -98,7 +100,7 @@ public class MainFrame extends JPanel {
 		saveButton.addActionListener( (e -> {
 			trigger.triggerCommit();
 			System.out.println("Committing changes to bean");
-			System.out.println(bean);
+			//System.out.println(bean);
 			System.out.println("Valuemodel title: " + titleModel.getValue());
 			addFileListener.refresh();
 		}));

@@ -1,39 +1,22 @@
 package se.anosh.jbstag.gui;
 
-import java.util.List;
-import java.util.Objects;
 
-import javax.swing.table.AbstractTableModel;
+import javax.swing.*;
 
+import com.jgoodies.binding.adapter.AbstractTableAdapter;
 import se.anosh.jbstag.model.GbsBean;
 
-public class SongTableModel extends AbstractTableModel {
+public class SongTableModel extends AbstractTableAdapter<GbsBean> {
 
-	private List<GbsBean> database;
+	private static final String columnNames[] = { "Title", "Composer", "Copyright", "Filename" };
 
-	private final String columnNames[] = { "Title", "Composer", "Copyright", "Filename" };
-
-	public SongTableModel() {
-	}
-
-	@Override
-	public String getColumnName(int column) {
-		return columnNames[column];
-	}
-
-	@Override
-	public int getRowCount() {
-		return database.size();
-	}
-
-	@Override
-	public int getColumnCount() {
-		return columnNames.length;
+	public SongTableModel(ListModel<GbsBean> listModel) {
+		super(listModel, columnNames);
 	}
 
 	@Override
 	public Object getValueAt(int row, int column) {
-		GbsBean gbs = database.get(row);
+		GbsBean gbs = (GbsBean) getRow(row);
 		
 		switch (column) {
 		case 0:
@@ -48,10 +31,5 @@ public class SongTableModel extends AbstractTableModel {
 			return null;
 		}
 	}
-	
-	public void setData(List<GbsBean> data) {
-		this.database = Objects.requireNonNull(data);
-	}
-	
 
 }
