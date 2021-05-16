@@ -26,11 +26,7 @@ public class Main extends JFrame {
 
 		formPanel = new MainFrame(tableSelection, db);
 		songList = new SongPanel(tableSelection, listSelectionModel);
-		songList.setData(db);
 		formPanel.setAddFileListener( () -> songList.refresh()); // event listener
-		songList.setSongTableListener( (n) -> {
-			formPanel.showSong(db.get(n));
-		});
 		setLayout(new BorderLayout());
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel.buildFormPanel(), songList);
 		splitPane.setResizeWeight(1);

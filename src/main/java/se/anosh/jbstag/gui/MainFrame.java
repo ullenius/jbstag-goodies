@@ -57,12 +57,6 @@ public class MainFrame extends JPanel {
 	public MainFrame(SelectionInList<GbsBean> tableSelection, List<GbsBean> database) {
 		this.db = Objects.requireNonNull(database);
 
-		/*
-		GbsBean bean = new GbsBean();
-		bean.setTitle("Fooobar");
-		bean.setComposer("Foo composer");
-		bean.setCopyright("Foobar AB");
-*/
 		this.trigger = new Trigger();
 		PresentationModel adapter = new PresentationModel(tableSelection, trigger); // PRESENTATION MODEL
 		beanProperty = new PropertyAdapter(adapter, "bean");
@@ -102,7 +96,6 @@ public class MainFrame extends JPanel {
 			System.out.println("Committing changes to bean");
 			//System.out.println(bean);
 			System.out.println("Valuemodel title: " + titleModel.getValue());
-			addFileListener.refresh();
 		}));
 	}
 
@@ -136,6 +129,7 @@ public class MainFrame extends JPanel {
 		newBean.setTitle(tag.getTitle());
 		newBean.setFilename(filename);
 		db.add(newBean);
+
 		addFileListener.refresh();
 		
 		beanProperty.setValue(newBean);
