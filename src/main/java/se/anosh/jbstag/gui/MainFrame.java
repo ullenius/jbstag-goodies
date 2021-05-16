@@ -59,8 +59,8 @@ public class MainFrame extends JPanel {
 	public MainFrame(SelectionInList<GbsBean> tableSelection, List<GbsBean> database) {
 		this.db = Objects.requireNonNull(database);
 		this.trigger = new Trigger();
-		PresentationModel adapter = new PresentationModel(tableSelection, trigger); // PRESENTATION MODEL
-		beanProperty = new PropertyAdapter(adapter, "bean");
+		PresentationModel<GbsBean> adapter = new PresentationModel<>(tableSelection, trigger); // PRESENTATION MODEL
+		beanProperty = new PropertyAdapter<Object>(adapter, "bean");
 		
 		ValueModel titleModel = adapter.getBufferedModel("title"); //DRY
 		createFields(adapter);
@@ -85,7 +85,7 @@ public class MainFrame extends JPanel {
 		}));
 	}
 
-	private void createFields(PresentationModel adapter) {
+	private void createFields(PresentationModel<GbsBean> adapter) {
 		// creating ValueModels
 		ValueModel titleModel = adapter.getBufferedModel("title");
 		ValueModel composerModel = adapter.getBufferedModel("composer");

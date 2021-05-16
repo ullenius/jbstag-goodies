@@ -8,7 +8,7 @@ import se.anosh.jbstag.model.GbsBean;
 
 public class SongTableModel extends AbstractTableAdapter<GbsBean> {
 
-	private static final String columnNames[] = { "Title", "Composer", "Copyright", "Filename" };
+	private static final String[] columnNames = { "Title", "Composer", "Copyright", "Filename" };
 
 	public SongTableModel(ListModel<GbsBean> listModel) {
 		super(listModel, columnNames);
@@ -16,7 +16,7 @@ public class SongTableModel extends AbstractTableAdapter<GbsBean> {
 
 	@Override
 	public Object getValueAt(int row, int column) {
-		GbsBean gbs = (GbsBean) getRow(row);
+		GbsBean gbs = getRow(row);
 		
 		switch (column) {
 		case 0:
