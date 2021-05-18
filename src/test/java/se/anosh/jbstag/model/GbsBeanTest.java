@@ -14,10 +14,14 @@ public class GbsBeanTest {
     private static final String COPYRIGHT = "1993 Konami";
     private static final String FILENAME = "kiddracula.gbs";
 
+    private static final String FULL_PATH = "/root/warez/gbs/".concat(FILENAME);
+
+
     private ValueModel titleModel;
     private ValueModel composerModel;
     private ValueModel copyrightModel;
     private ValueModel filenameModel;
+    private ValueModel fullpathModel;
 
     private GbsBean bean;
 
@@ -34,6 +38,7 @@ public class GbsBeanTest {
         composerModel = presentationModel.getModel("composer");
         copyrightModel = presentationModel.getModel("copyright");
         filenameModel = presentationModel.getModel("filename");
+        fullpathModel = presentationModel.getModel("fullpath");
     }
 
     @Test
@@ -82,6 +87,22 @@ public class GbsBeanTest {
 
         bean.setFilename(FILENAME);
         assertEquals(FILENAME, filenameModel.getValue());
+    }
+
+    @Test
+    public void updateFullpath() {
+        final String NEW_FULLPATH = "/tmp/".concat(FILENAME);
+        fullpathModel.setValue(NEW_FULLPATH);
+        assertEquals(NEW_FULLPATH, bean.getFullpath());
+
+        bean.setFullpath(FULL_PATH);
+        assertEquals(FULL_PATH, fullpathModel.getValue());
+    }
+
+    @Test
+    public void nullFullpathReturnsEmptyString() {
+        fullpathModel.setValue(null);
+        assertEquals("", bean.getFullpath());
     }
 
 

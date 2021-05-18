@@ -61,14 +61,14 @@ public class GbsBean {
 		changeSupport.firePropertyChange("filename", oldValue, filename);
 	}
 
-	public void setFullpath(String path) {
+	public void setFullpath(String newPath) {
 		String oldValue = (fullpath != null) ? fullpath.toString() : "";
-		fullpath = Paths.get(path);
-		changeSupport.firePropertyChange("fullPath", oldValue, fullpath.toString());
+		fullpath = (newPath != null) ? Paths.get(newPath) : null;
+		changeSupport.firePropertyChange("fullPath", oldValue, newPath);
 	}
 
 	public String getFullpath() {
-		return fullpath.toString();
+		return (fullpath != null) ? fullpath.toString() : "";
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener x) {
