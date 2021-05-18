@@ -30,7 +30,9 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import org.pmw.tinylog.Logger;
-import se.anosh.gbs.domain.ReadOnlySimpleGbsTag;
+import se.anosh.gbs.domain.SimpleGbsTag;
+import se.anosh.gbs.domain.Tag;
+import se.anosh.gbs.service.Gbs;
 import se.anosh.gbs.service.GbsFile;
 import se.anosh.jbstag.model.GbsBean;
 
@@ -50,8 +52,9 @@ public class MainFrame extends JPanel {
 	private final Trigger trigger;
 	
 	private ValueModel beanProperty;
+	private PresentationModel<GbsBean> adapter;
 
-	private ReadOnlySimpleGbsTag tag;
+	private SimpleGbsTag tag;
 	private final List<GbsBean> db;
 
 	private static final int TEXTFIELD_COLUMNS = 25;
@@ -59,7 +62,7 @@ public class MainFrame extends JPanel {
 	public MainFrame(SelectionInList<GbsBean> tableSelection, List<GbsBean> database) {
 		this.db = Objects.requireNonNull(database);
 		this.trigger = new Trigger();
-		PresentationModel<GbsBean> adapter = new PresentationModel<>(tableSelection, trigger);
+		adapter = new PresentationModel<>(tableSelection, trigger);
 		beanProperty = new PropertyAdapter<Object>(adapter, "bean");
 		
 		ValueModel titleModel = adapter.getBufferedModel("title"); //DRY
@@ -82,7 +85,54 @@ public class MainFrame extends JPanel {
 			trigger.triggerCommit();
 			Logger.debug("Committing changes to bean");
 			Logger.debug("Valuemodel title: {}", titleModel.getValue());
+
+			try {
+				saveToFile();
+				addFileListener.refresh();
+			} catch (IOException ex) {
+				Logger.error("Write error", ex);
+				showErrorMessageBox("Unable to open file: " + ex.getMessage());
+			}
 		}));
+	}
+
+	private void saveToFile() throws IOException {
+		updateTag();
+
+		ValueModel filepath = adapter.getModel("fullpath");
+		String path = (String) filepath.getValue();
+
+		Gbs gbs = new GbsFile(path);
+		Tag filetag = gbs.getTag();
+		final int oldHash = Objects.hash(tag.getAuthor(), tag.getCopyright(), tag.getTitle());
+		final int currentHash = Objects.hash(filetag.getAuthor(), filetag.getCopyright(), filetag.getTitle());
+
+		if (oldHash != currentHash) {
+			Logger.debug("Hash has changed, writing changes");
+			filetag.setCopyright(tag.getCopyright());
+			filetag.setTitle(tag.getTitle());
+			filetag.setAuthor(tag.getAuthor());
+			gbs.save();
+		}
+		else {
+			Logger.debug("Hash has not changed. Do nothing");
+		}
+		Logger.debug("Old hash: {}", oldHash);
+		Logger.debug("New hash: {}", currentHash);
+	}
+
+	private void updateTag() {
+		ValueModel titleModel = adapter.getModel("title");
+		ValueModel composerModel = adapter.getModel("composer");
+		ValueModel copyrightModel = adapter.getModel("copyright");
+
+		String title = (String) titleModel.getValue();
+		String composer = (String) composerModel.getValue();
+		String copyright = (String) copyrightModel.getValue();
+
+		tag.setAuthor(composer);
+		tag.setCopyright(copyright);
+		tag.setTitle(title);
 	}
 
 	private void createFields(PresentationModel<GbsBean> adapter) {
@@ -118,7 +168,7 @@ public class MainFrame extends JPanel {
 			File selectedFile = fileChooser.getSelectedFile();
 
 			if (readFile(selectedFile.getAbsolutePath())) {
-				updateFields(selectedFile.getName());
+				updateFields(selectedFile.getName(), selectedFile.getAbsolutePath());
 			}
 		}
 	}
@@ -127,26 +177,30 @@ public class MainFrame extends JPanel {
 		this.addFileListener = listener;
 	}
 
-	private void updateFields(String filename) {
+	private void updateFields(String filename, String fullpath) {
+		Logger.debug("Fullpath = {}", fullpath);
+
 		GbsBean newBean = new GbsBean();
 		newBean.setComposer(tag.getAuthor());
 		newBean.setCopyright(tag.getCopyright());
 		newBean.setTitle(tag.getTitle());
 		newBean.setFilename(filename);
+		newBean.setFullpath(fullpath);
+
 		db.add(newBean);
 
 		addFileListener.refresh();
-		
 		beanProperty.setValue(newBean);
 		trigger.triggerCommit();
 	}
 
 	private boolean readFile(final String filename) {
 		try {
-			GbsFile reader = new GbsFile(filename);
+			Gbs reader = new GbsFile(filename);
 			tag = reader.getTag();
 			return true;
 		} catch (IOException | IllegalArgumentException ex) {
+			Logger.error("Readfile error", ex);
 			showErrorMessageBox("Unable to open file: " + ex.getMessage());
 			return false;
 		}

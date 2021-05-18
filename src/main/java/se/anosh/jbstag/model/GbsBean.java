@@ -1,6 +1,8 @@
 package se.anosh.jbstag.model;
 
 import java.beans.PropertyChangeListener;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 import com.jgoodies.binding.beans.ExtendedPropertyChangeSupport;
@@ -14,8 +16,8 @@ public class GbsBean {
 	private String composer = "";
 	private String copyright = "";
 	private String filename = "";
-	
-	
+	private Path fullpath;
+
 	public GbsBean() {
 	}
 	
@@ -59,6 +61,16 @@ public class GbsBean {
 		changeSupport.firePropertyChange("filename", oldValue, filename);
 	}
 
+	public void setFullpath(String path) {
+		String oldValue = (fullpath != null) ? fullpath.toString() : "";
+		fullpath = Paths.get(path);
+		changeSupport.firePropertyChange("fullPath", oldValue, fullpath.toString());
+	}
+
+	public String getFullpath() {
+		return fullpath.toString();
+	}
+
 	public void addPropertyChangeListener(PropertyChangeListener x) {
 		changeSupport.addPropertyChangeListener(x);
 	}
@@ -69,8 +81,14 @@ public class GbsBean {
 
 	@Override
 	public String toString() {
-		return "Bean [title=" + title + ", composer=" + composer + ", copyright=" + copyright + ", filename=" + filename
-				+ "]";
+		return "GbsBean{" +
+				"changeSupport=" + changeSupport +
+				", title='" + title + '\'' +
+				", composer='" + composer + '\'' +
+				", copyright='" + copyright + '\'' +
+				", filename='" + filename + '\'' +
+				", fullpath=" + fullpath +
+				'}';
 	}
 
 	@Override
