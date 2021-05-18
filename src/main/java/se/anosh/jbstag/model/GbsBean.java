@@ -82,12 +82,11 @@ public class GbsBean {
 	@Override
 	public String toString() {
 		return "GbsBean{" +
-				"changeSupport=" + changeSupport +
 				", title='" + title + '\'' +
 				", composer='" + composer + '\'' +
 				", copyright='" + copyright + '\'' +
 				", filename='" + filename + '\'' +
-				", fullpath=" + fullpath +
+				", fullpath=" + ((fullpath != null) ? fullpath : "") +
 				'}';
 	}
 
