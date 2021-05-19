@@ -21,6 +21,7 @@ import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.beans.PropertyConnector;
 import com.jgoodies.binding.list.SelectionInList;
+import com.jgoodies.binding.value.AbstractValueModel;
 import com.jgoodies.binding.value.Trigger;
 import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.forms.builder.PanelBuilder;
@@ -99,8 +100,8 @@ public class MainFrame extends JPanel {
 	private void saveToFile() throws IOException {
 		updateTag();
 
-		ValueModel filepath = adapter.getModel("fullpath");
-		String path = (String) filepath.getValue();
+		AbstractValueModel filepathModel = adapter.getModel("fullpath");
+		String path = filepathModel.getString();
 
 		Gbs gbs = new GbsFile(path);
 		Tag filetag = gbs.getTag();
@@ -122,13 +123,13 @@ public class MainFrame extends JPanel {
 	}
 
 	private void updateTag() {
-		ValueModel titleModel = adapter.getModel("title");
-		ValueModel composerModel = adapter.getModel("composer");
-		ValueModel copyrightModel = adapter.getModel("copyright");
+		AbstractValueModel titleModel = adapter.getModel("title");
+		AbstractValueModel composerModel = adapter.getModel("composer");
+		AbstractValueModel copyrightModel = adapter.getModel("copyright");
 
-		String title = (String) titleModel.getValue();
-		String composer = (String) composerModel.getValue();
-		String copyright = (String) copyrightModel.getValue();
+		String title = titleModel.getString();
+		String composer = composerModel.getString();
+		String copyright = copyrightModel.getString();
 
 		tag.setAuthor(composer);
 		tag.setCopyright(copyright);

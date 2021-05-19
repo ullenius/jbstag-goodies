@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class GbsBeanTest {
 
@@ -15,7 +16,6 @@ public class GbsBeanTest {
     private static final String FILENAME = "kiddracula.gbs";
 
     private static final String FULL_PATH = "/root/warez/gbs/".concat(FILENAME);
-
 
     private ValueModel titleModel;
     private ValueModel composerModel;
@@ -103,6 +103,12 @@ public class GbsBeanTest {
     public void nullFullpathReturnsEmptyString() {
         fullpathModel.setValue(null);
         assertEquals("", bean.getFullpath());
+    }
+
+    @Test
+    public void toStringDoesNotThrowNPEOnEmptyFullpath() {
+        GbsBean bean = new GbsBean();
+        assertFalse(bean.toString().isEmpty());
     }
 
 
