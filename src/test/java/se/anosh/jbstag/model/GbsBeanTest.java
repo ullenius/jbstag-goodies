@@ -34,11 +34,11 @@ public class GbsBeanTest {
         bean.setFilename(FILENAME);
 
         PresentationModel<GbsBean> presentationModel = new PresentationModel<>(bean);
-        titleModel = presentationModel.getModel("title");
-        composerModel = presentationModel.getModel("composer");
-        copyrightModel = presentationModel.getModel("copyright");
-        filenameModel = presentationModel.getModel("filename");
-        fullpathModel = presentationModel.getModel("fullpath");
+        titleModel = presentationModel.getModel(GbsBean.PROPERTY_TITLE);
+        composerModel = presentationModel.getModel(GbsBean.PROPERTY_COMPOSER);
+        copyrightModel = presentationModel.getModel(GbsBean.PROPERTY_COPYRIGHT);
+        filenameModel = presentationModel.getModel(GbsBean.PROPERTY_FILENAME);
+        fullpathModel = presentationModel.getModel(GbsBean.PROPERTY_FULL_PATH);
     }
 
     @Test

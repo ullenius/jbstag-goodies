@@ -8,7 +8,13 @@ import java.util.Objects;
 import com.jgoodies.binding.beans.ExtendedPropertyChangeSupport;
 
 public class GbsBean {
-	
+
+	public static final String PROPERTY_COMPOSER = "composer";
+	public static final String PROPERTY_TITLE = "title";
+	public static final String PROPERTY_FILENAME = "filename";
+	public static final String PROPERTY_COPYRIGHT= "copyright";
+	public static final String PROPERTY_FULL_PATH = "fullpath";
+
 	private ExtendedPropertyChangeSupport changeSupport = new ExtendedPropertyChangeSupport(
 			this);
 	

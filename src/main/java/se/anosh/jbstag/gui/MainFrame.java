@@ -66,7 +66,7 @@ public class MainFrame extends JPanel {
 		adapter = new PresentationModel<>(tableSelection, trigger);
 		beanProperty = new PropertyAdapter<Object>(adapter, "bean");
 		
-		ValueModel titleModel = adapter.getBufferedModel("title"); //DRY
+		ValueModel titleModel = adapter.getBufferedModel(GbsBean.PROPERTY_TITLE); //DRY
 		createFields(adapter);
 
 		// bind buttons to actions
@@ -100,7 +100,7 @@ public class MainFrame extends JPanel {
 	private void saveToFile() throws IOException {
 		updateTag();
 
-		AbstractValueModel filepathModel = adapter.getModel("fullpath");
+		AbstractValueModel filepathModel = adapter.getModel(GbsBean.PROPERTY_FULL_PATH);
 		String path = filepathModel.getString();
 
 		Gbs gbs = new GbsFile(path);
@@ -123,9 +123,9 @@ public class MainFrame extends JPanel {
 	}
 
 	private void updateTag() {
-		AbstractValueModel titleModel = adapter.getModel("title");
-		AbstractValueModel composerModel = adapter.getModel("composer");
-		AbstractValueModel copyrightModel = adapter.getModel("copyright");
+		AbstractValueModel titleModel = adapter.getModel(GbsBean.PROPERTY_TITLE);
+		AbstractValueModel composerModel = adapter.getModel(GbsBean.PROPERTY_COMPOSER);
+		AbstractValueModel copyrightModel = adapter.getModel(GbsBean.PROPERTY_COPYRIGHT);
 
 		String title = titleModel.getString();
 		String composer = composerModel.getString();
@@ -138,10 +138,10 @@ public class MainFrame extends JPanel {
 
 	private void createFields(PresentationModel<GbsBean> adapter) {
 		// creating ValueModels
-		ValueModel titleModel = adapter.getBufferedModel("title");
-		ValueModel composerModel = adapter.getBufferedModel("composer");
-		ValueModel copyrightModel = adapter.getBufferedModel("copyright");
-		ValueModel filenameModel = adapter.getBufferedModel("filename");
+		ValueModel titleModel = adapter.getBufferedModel(GbsBean.PROPERTY_TITLE);
+		ValueModel composerModel = adapter.getBufferedModel(GbsBean.PROPERTY_COMPOSER);
+		ValueModel copyrightModel = adapter.getBufferedModel(GbsBean.PROPERTY_COPYRIGHT);
+		ValueModel filenameModel = adapter.getBufferedModel(GbsBean.PROPERTY_FILENAME);
 
 		titleField = BasicComponentFactory.createTextField(titleModel);
 		composerField = BasicComponentFactory.createTextField(composerModel);
@@ -236,20 +236,20 @@ public class MainFrame extends JPanel {
 		builder.border(Paddings.DIALOG); // replaces the deprecated setDefaultDialogBorder();
 		CellConstraints cc = new CellConstraints();
 
-		builder.addLabel("Title",    cc.xy(1, 1));
-		builder.add(titleField,         			 cc.xy(3, 1));
+		builder.addLabel("Title", cc.xy(1, 1));
+		builder.add(titleField, cc.xy(3, 1));
 		builder.addLabel("Composer", cc.xy(1, 3));
-		builder.add(composerField,         			 cc.xy(3, 3));
+		builder.add(composerField, cc.xy(3, 3));
 		builder.addLabel("Copyright", cc.xy(1, 5));
-		builder.add(copyrightField,        			 cc.xy(3, 5));
+		builder.add(copyrightField, cc.xy(3, 5));
 		
 		builder.addLabel("Filename", cc.xy(1, 7));
-		builder.add(filenameField,					 cc.xy(3, 7));
+		builder.add(filenameField, cc.xy(3, 7));
 		
-		builder.add(openButton,	    				 cc.xy(1, 9));
-		builder.add(saveButton,	    				 cc.xy(3, 9));
+		builder.add(openButton, cc.xy(1, 9));
+		builder.add(saveButton, cc.xy(3, 9));
 		
-		builder.add(gameboy,					 cc.xy(3, 11, CellConstraints.FILL, CellConstraints.CENTER));
+		builder.add(gameboy, cc.xy(3, 11, CellConstraints.FILL, CellConstraints.CENTER));
 		return builder.getPanel();
 	}
 
