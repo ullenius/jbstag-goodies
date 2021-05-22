@@ -13,9 +13,9 @@ import se.anosh.jbstag.model.GbsBean;
 
 public class Main extends JFrame {
 	
-	private MainFrame formPanel;
-	private JSplitPane splitPane;
-	private SongPanel songList;
+	private final MainFrame formPanel;
+	private final JSplitPane splitPane;
+	private final SongPanel songList;
 	private final List<GbsBean> db = new LinkedList<>();
 	
 	public Main() {
@@ -26,7 +26,7 @@ public class Main extends JFrame {
 
 		formPanel = new MainFrame(tableSelection, db);
 		songList = new SongPanel(tableSelection, listSelectionModel);
-		formPanel.setAddFileListener( () -> songList.refresh()); // event listener
+		formPanel.setAddFileListener(songList::refresh); // event listener
 		setLayout(new BorderLayout());
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel.buildFormPanel(), songList);
 		splitPane.setResizeWeight(1);

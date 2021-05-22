@@ -46,8 +46,8 @@ public class MainFrame extends JPanel {
 	private JTextField composerField;
 	private JTextField copyrightField;
 
-	private JButton saveButton;
-	private JButton openButton;
+	private final JButton saveButton;
+	private final JButton openButton;
 	private JTextField filenameField;
 	private AddGbsFileListener addFileListener;
 	private final Trigger trigger;
@@ -64,8 +64,8 @@ public class MainFrame extends JPanel {
 		this.db = Objects.requireNonNull(database);
 		this.trigger = new Trigger();
 		adapter = new PresentationModel<>(tableSelection, trigger);
-		beanProperty = new PropertyAdapter<Object>(adapter, "bean");
-		
+		beanProperty = new PropertyAdapter<Object>(adapter, PresentationModel.PROPERTY_BEAN);
+
 		ValueModel titleModel = adapter.getBufferedModel(GbsBean.PROPERTY_TITLE); //DRY
 		createFields(adapter);
 

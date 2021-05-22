@@ -34,7 +34,7 @@ public class GbsBean {
 	public void setTitle(String title) {
 		String oldValue = this.title;
 		this.title = title;
-		changeSupport.firePropertyChange("title", oldValue, title);
+		changeSupport.firePropertyChange(PROPERTY_TITLE, oldValue, title);
 	}
 	
 	public String getComposer() {
@@ -44,7 +44,7 @@ public class GbsBean {
 	public void setComposer(String composer) {
 		String oldValue = this.composer;
 		this.composer = composer;
-		changeSupport.firePropertyChange("composer", oldValue, composer);
+		changeSupport.firePropertyChange(PROPERTY_COMPOSER, oldValue, composer);
 	}
 	
 	public String getCopyright() {
@@ -54,7 +54,7 @@ public class GbsBean {
 	public void setCopyright(String copyright) {
 		String oldValue = this.copyright;
 		this.copyright = copyright;
-		changeSupport.firePropertyChange("copyright", oldValue, copyright);
+		changeSupport.firePropertyChange(PROPERTY_COPYRIGHT, oldValue, copyright);
 	}
 	
 	public String getFilename() {
@@ -64,13 +64,13 @@ public class GbsBean {
 	public void setFilename(String filename) {
 		String oldValue = this.filename;
 		this.filename = filename;
-		changeSupport.firePropertyChange("filename", oldValue, filename);
+		changeSupport.firePropertyChange(PROPERTY_FILENAME, oldValue, filename);
 	}
 
 	public void setFullpath(String newPath) {
 		String oldValue = (fullpath != null) ? fullpath.toString() : "";
 		fullpath = (newPath != null) ? Paths.get(newPath) : null;
-		changeSupport.firePropertyChange("fullPath", oldValue, newPath);
+		changeSupport.firePropertyChange(PROPERTY_FULL_PATH, oldValue, newPath);
 	}
 
 	public String getFullpath() {
