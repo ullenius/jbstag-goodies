@@ -12,7 +12,7 @@ public class FileFinder extends SimpleFileVisitor<Path> {
     private final PathMatcher matcher;
     private List<Path> myList = new ArrayList<>();
 
-    FileFinder(String pattern) {
+    public FileFinder(String pattern) {
         matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
     }
 

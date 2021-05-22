@@ -4,6 +4,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,6 +39,7 @@ import se.anosh.gbs.domain.Tag;
 import se.anosh.gbs.service.Gbs;
 import se.anosh.gbs.service.GbsFile;
 import se.anosh.jbstag.model.GbsBean;
+import se.anosh.jbstag.util.FileFinder;
 
 public class MainFrame extends JPanel {
 
@@ -48,6 +52,7 @@ public class MainFrame extends JPanel {
 
 	private final JButton saveButton;
 	private final JButton openButton;
+	private final JButton addFolderButton;
 	private JTextField filenameField;
 	private AddGbsFileListener addFileListener;
 	private final Trigger trigger;
@@ -72,9 +77,20 @@ public class MainFrame extends JPanel {
 		// bind buttons to actions
 		saveButton = new JButton("Save");
 		PropertyConnector.connect(adapter, PresentationModel.PROPERTY_BUFFERING, saveButton, "enabled");
-		
+
 		openButton = new JButton("Open file");
-		saveButton.setPreferredSize(openButton.getPreferredSize());
+
+		addFolderButton = new JButton("Add folder");
+		addFolderButton.addActionListener((e) -> {
+			Logger.debug("Add folder");
+			try {
+				openDirectory();
+			} catch (IOException ioException) {
+				ioException.printStackTrace();
+			}
+		});
+		saveButton.setPreferredSize(addFolderButton.getPreferredSize());
+		openButton.setPreferredSize(addFolderButton.getPreferredSize());
 
 		openButton.addActionListener( (e) -> {
 			Logger.debug("Flushing/rollback commits");
@@ -174,6 +190,46 @@ public class MainFrame extends JPanel {
 		}
 	}
 
+	private void openDirectory() throws IOException {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory((new File(System.getProperty("user.home"))));
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int result = fileChooser.showOpenDialog(null);
+
+		if (result == JFileChooser.APPROVE_OPTION) {
+			Logger.debug("approved option");
+			File selectedDirectory = fileChooser.getSelectedFile();
+			Logger.debug("selected dir: {}", selectedDirectory);
+			traverseAndAdd(selectedDirectory);
+		}
+		else {
+			Logger.debug("not approved");
+		}
+	}
+
+	private void traverseAndAdd(File dir) throws IOException {
+		Logger.debug("dir absPath {}", dir.getAbsolutePath());
+		Path path = dir.toPath();
+		if (Files.isSymbolicLink(path)) {
+			Logger.debug("Path is symlink");
+			path = path.toRealPath();
+			Logger.debug("real path resolved: {}", path);
+		}
+
+		FileFinder fs = new FileFinder("*.gbs");
+		// pass the initial directory and the finder to the file tree walker
+		Files.walkFileTree(Paths.get(path.toString()), fs);
+		// get the matched paths
+		Logger.debug("total matches {}", fs.getTotalMatches());
+		List<Path> files = fs.getList();
+		//System.out.println(files);
+		for (Path p : files) {
+			if (readFile(p.toString())) {
+				updateFields(p.getFileName().toString(), p.toAbsolutePath().toString());
+			}
+		}
+	}
+
 	public void setAddFileListener(AddGbsFileListener listener) {
 		this.addFileListener = listener;
 	}
@@ -212,7 +268,7 @@ public class MainFrame extends JPanel {
 	}
 
 	JPanel buildFormPanel() {
-		
+
 		JLabel gameboy = new JLabel(new ImageIcon(getClass().getResource("/gameboy-tahsin.png")));
 		gameboy.setToolTipText("GBS Tagger");
 		gameboy.addMouseListener( new MouseAdapter() {
@@ -224,7 +280,7 @@ public class MainFrame extends JPanel {
 		
 		FormLayout layout = new FormLayout(
 				"right:75dlu, $lcg, left:pref:grow",	// 3 columns
-				"pref, 10dlu, pref, 10dlu, pref, 10dlu, pref, 20dlu, pref, $lcg, pref");// 11 rows
+				"pref, 10dlu, pref, 10dlu, pref, 10dlu, pref, 20dlu, pref, $lcg, pref, $lcg, pref");// 13 rows
 		//layout.setColumnGroups( new int[][] { { 1, 3 } } );
 		layout.setRowGroups( new int[][] { { 2, 4, 6  } } );
 
@@ -248,8 +304,10 @@ public class MainFrame extends JPanel {
 		
 		builder.add(openButton, cc.xy(1, 9));
 		builder.add(saveButton, cc.xy(3, 9));
+
+		builder.add(addFolderButton, cc.xy(1, 11));
 		
-		builder.add(gameboy, cc.xy(3, 11, CellConstraints.FILL, CellConstraints.CENTER));
+		builder.add(gameboy, cc.xy(3, 13, CellConstraints.FILL, CellConstraints.CENTER));
 		return builder.getPanel();
 	}
 
