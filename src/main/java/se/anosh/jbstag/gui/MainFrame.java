@@ -71,7 +71,7 @@ public class MainFrame extends JPanel {
 
 		// bind buttons to actions
 		saveButton = new JButton("Save");
-		PropertyConnector.connect(adapter, "buffering", saveButton, "enabled");
+		PropertyConnector.connect(adapter, PresentationModel.PROPERTY_BUFFERING, saveButton, "enabled");
 		
 		openButton = new JButton("Open file");
 		saveButton.setPreferredSize(openButton.getPreferredSize());
@@ -223,9 +223,9 @@ public class MainFrame extends JPanel {
 		});
 		
 		FormLayout layout = new FormLayout(
-				"right:pref, $lcg, left:pref:grow",	// 3 columns
+				"right:75dlu, $lcg, left:pref:grow",	// 3 columns
 				"pref, 10dlu, pref, 10dlu, pref, 10dlu, pref, 20dlu, pref, $lcg, pref");// 11 rows
-		layout.setColumnGroups( new int[][] { { 1, 3 } } );
+		//layout.setColumnGroups( new int[][] { { 1, 3 } } );
 		layout.setRowGroups( new int[][] { { 2, 4, 6  } } );
 
 		JPanel panel = new JPanel(layout);
