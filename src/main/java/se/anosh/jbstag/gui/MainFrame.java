@@ -222,12 +222,12 @@ public class MainFrame extends JPanel {
 		// get the matched paths
 		Logger.debug("total matches {}", fs.getTotalMatches());
 		List<Path> files = fs.getList();
-		//System.out.println(files);
 		for (Path p : files) {
 			if (readFile(p.toString())) {
 				updateFields(p.getFileName().toString(), p.toAbsolutePath().toString());
 			}
 		}
+		db.sort( (a,b) -> a.getTitle().compareTo(b.getTitle()));
 	}
 
 	public void setAddFileListener(AddGbsFileListener listener) {
