@@ -13,10 +13,10 @@ import se.anosh.jbstag.model.GbsBean;
 
 public class Main extends JFrame {
 	
-	private MainFrame formPanel;
-	private JSplitPane splitPane;
-	private SongPanel songList;
-	private List<GbsBean> db = new LinkedList<>();
+	private final MainFrame formPanel;
+	private final JSplitPane splitPane;
+	private final SongPanel songList;
+	private final List<GbsBean> db = new LinkedList<>();
 	
 	public Main() {
 		super("Jbstag 0.9");
@@ -26,12 +26,12 @@ public class Main extends JFrame {
 
 		formPanel = new MainFrame(tableSelection, db);
 		songList = new SongPanel(tableSelection, listSelectionModel);
-		formPanel.setAddFileListener( () -> songList.refresh()); // event listener
+		formPanel.setAddFileListener(songList::refresh); // event listener
 		setLayout(new BorderLayout());
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel.buildFormPanel(), songList);
 		splitPane.setResizeWeight(1);
 		splitPane.setDividerSize(1);
-		setMinimumSize(new Dimension(1500,400));
+		setMinimumSize(new Dimension(1400,400));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		add(splitPane, BorderLayout.CENTER);
