@@ -1,7 +1,7 @@
 # jbstag : Java GBS Tagger
 <img src="screenshot2.png" alt="Java GBS Tagger in action" align="right">
 
-[jbstag](https://github.com/ullenius/jbstag-improved) is a tagger for GBS-files made in Java (Swing).
+[jbstag](https://github.com/ullenius/jbstag-goodies) is a tagger for GBS-files made in Java (Swing).
 
 Reads and edits tags from Game Boy music files (GBS).
 
