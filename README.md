@@ -1,5 +1,5 @@
 # jbstag : Java GBS Tagger
-<img src="screenshot.png" alt="Java GBS Tagger in action" align="right">
+<img src="screenshot2.png" alt="Java GBS Tagger in action" align="right">
 
 [jbstag](https://github.com/ullenius/jbstag-improved) is a tagger for GBS-files made in Java (Swing).
 
@@ -27,11 +27,6 @@ Or run the build-script provided:
 ```
 
 
-## Binaries
-I've included a executable jar-file to simplify for end-users who can't compile stuff on their platform.
-
-* Download [jbstag.zip](https://github.com/ullenius/jbstag/blob/master/jbstag-binaries.zip)
-
 ## Issues
 There might be some issues on your platform with the UTF-8 fonts not rendering properly. This is a Swing issue.
 
@@ -39,7 +34,7 @@ There might be some issues on your platform with the UTF-8 fonts not rendering p
 ## Development
 This is re-written implementation of jbstag. GUI is now hand-coded and the I/O is handled by my improved [gbs-lib](https://github.com/ullenius/gbstab-lib) as an external JAR-library.
 
-It was made as a way to learn Swing, Jgoodies Forms and Binding frameworks.The latter is a port of the data binding framework from Smalltalk Visual Works. Previously the GUI was made using Netbeans' 8.2 Swing editor.
+It was made as a way to learn Swing, Jgoodies Forms and Binding frameworks.The latter is a port of the data binding framework from Smalltalk Visual Works.
 
 
 ## Changelog
