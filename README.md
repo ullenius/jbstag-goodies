@@ -26,6 +26,10 @@ Or run the build-script provided:
 ./build.sh
 ```
 
+## Install
+I've included a executable jar-file to simplify for end-users who can't compile stuff on their platform.
+* Download [jbstag-goodies0.9.zip](https://github.com/ullenius/jbstag-goodies/releases/download/v0.9-beta/jbstag-goodies0.9.zip)
+
 
 ## Issues
 There might be some issues on your platform with the UTF-8 fonts not rendering properly. This is a Swing issue.
