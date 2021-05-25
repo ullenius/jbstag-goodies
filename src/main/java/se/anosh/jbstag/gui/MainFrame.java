@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -191,7 +192,7 @@ public class MainFrame extends JPanel {
 		TraverseFiles.stream(directory)
 				.filter(this::readFile)
 				.forEach(this::updateFields);
-		db.sort( (a,b) -> a.getTitle().compareTo(b.getTitle()));
+		db.sort(Comparator.comparing(GbsBean::getTitle));
 	}
 
 	public void setAddFileListener(AddGbsFileListener listener) {
@@ -241,7 +242,7 @@ public class MainFrame extends JPanel {
 
 	JPanel buildFormPanel() {
 
-		JLabel gameboy = new JLabel(new ImageIcon(getClass().getResource("/gameboy-tahsin.png")));
+		JLabel gameboy = new JLabel(new ImageIcon(Objects.requireNonNull(getClass().getResource("/gameboy-tahsin.png"))));
 		gameboy.setToolTipText("GBS Tagger");
 		gameboy.addMouseListener( new MouseAdapter() {
 			@Override

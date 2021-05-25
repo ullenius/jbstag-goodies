@@ -11,8 +11,8 @@ import se.anosh.jbstag.model.GbsBean;
 
 public class SongPanel extends JPanel {
 	
-	private JTable table;
-	private SongTableModel tableModel;
+	private final JTable table;
+	private final SongTableModel tableModel;
 
 	public SongPanel(ListModel<GbsBean> listModel, ListSelectionModel listSelectionModel) {
 		tableModel = new SongTableModel(listModel);

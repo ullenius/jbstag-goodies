@@ -18,7 +18,7 @@ public final class FileFinder extends SimpleFileVisitor<Path> {
 
     // Compares the glob pattern against
     // the file or directory name.
-    void match(Path file) throws IOException {
+    void match(Path file) {
         Path name = file.getFileName();
         if (name != null && matcher.matches(name)) {
             myList.add(file.toAbsolutePath());

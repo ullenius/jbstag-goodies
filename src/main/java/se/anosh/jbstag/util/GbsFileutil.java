@@ -7,7 +7,6 @@ import se.anosh.gbs.service.Gbs;
 import se.anosh.gbs.service.GbsFile;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Objects;
 
 public class GbsFileutil {
