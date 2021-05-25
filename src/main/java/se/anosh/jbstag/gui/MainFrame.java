@@ -33,6 +33,7 @@ import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
+import jdk.nashorn.internal.runtime.regexp.joni.constants.Traverse;
 import org.pmw.tinylog.Logger;
 import se.anosh.gbs.domain.SimpleGbsTag;
 import se.anosh.gbs.domain.Tag;
@@ -40,6 +41,7 @@ import se.anosh.gbs.service.Gbs;
 import se.anosh.gbs.service.GbsFile;
 import se.anosh.jbstag.model.GbsBean;
 import se.anosh.jbstag.util.FileFinder;
+import se.anosh.jbstag.util.TraverseFiles;
 
 public class MainFrame extends JPanel {
 
@@ -207,21 +209,8 @@ public class MainFrame extends JPanel {
 		}
 	}
 
-	private void traverseAndAdd(File dir) throws IOException {
-		Logger.debug("dir absPath {}", dir.getAbsolutePath());
-		Path path = dir.toPath();
-		if (Files.isSymbolicLink(path)) {
-			Logger.debug("Path is symlink");
-			path = path.toRealPath();
-			Logger.debug("real path resolved: {}", path);
-		}
-
-		FileFinder fs = new FileFinder("*.gbs");
-		// pass the initial directory and the finder to the file tree walker
-		Files.walkFileTree(Paths.get(path.toString()), fs);
-		// get the matched paths
-		Logger.debug("total matches {}", fs.getTotalMatches());
-		fs.getList().stream()
+	private void traverseAndAdd(File directory) throws IOException {
+		TraverseFiles.stream(directory)
 				.filter(this::readFile)
 				.forEach(this::updateFields);
 		db.sort( (a,b) -> a.getTitle().compareTo(b.getTitle()));
