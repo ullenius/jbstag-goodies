@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -166,7 +167,8 @@ public class MainFrame extends JPanel {
 			File selectedFile = fileChooser.getSelectedFile();
 
 			if (readFile(selectedFile.getAbsolutePath())) {
-				updateFields(selectedFile.getName(), selectedFile.getAbsolutePath());
+				Path filepath = Paths.get(selectedFile.getAbsolutePath());
+				updateFields(filepath);
 			}
 		}
 	}
@@ -200,10 +202,9 @@ public class MainFrame extends JPanel {
 	}
 
 	private void updateFields(Path path) {
-		updateFields(path.getFileName().toString(), path.toAbsolutePath().toString());
-	}
+		String fullpath = path.toAbsolutePath().toString();
+		String filename = path.getFileName().toString();
 
-	private void updateFields(String filename, String fullpath) {
 		Logger.debug("Fullpath = {}", fullpath);
 
 		GbsBean newBean = new GbsBean();
