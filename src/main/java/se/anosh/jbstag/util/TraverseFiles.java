@@ -1,7 +1,6 @@
 package se.anosh.jbstag.util;
 
 import org.pmw.tinylog.Logger;
-import se.anosh.jbstag.util.FileFinder;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-public class TraverseFiles {
+public final class TraverseFiles {
 
     public static Stream<Path> stream(File dir) throws IOException {
         Logger.debug("dir absPath {}", dir.getAbsolutePath());

@@ -4,9 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,14 +31,12 @@ import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-import jdk.nashorn.internal.runtime.regexp.joni.constants.Traverse;
 import org.pmw.tinylog.Logger;
 import se.anosh.gbs.domain.SimpleGbsTag;
-import se.anosh.gbs.domain.Tag;
 import se.anosh.gbs.service.Gbs;
 import se.anosh.gbs.service.GbsFile;
 import se.anosh.jbstag.model.GbsBean;
-import se.anosh.jbstag.util.FileFinder;
+import se.anosh.jbstag.util.GbsFileutil;
 import se.anosh.jbstag.util.TraverseFiles;
 
 public class MainFrame extends JPanel {
@@ -117,27 +113,9 @@ public class MainFrame extends JPanel {
 
 	private void saveToFile() throws IOException {
 		updateTag();
-
 		AbstractValueModel filepathModel = adapter.getModel(GbsBean.PROPERTY_FULL_PATH);
 		String path = filepathModel.getString();
-
-		Gbs gbs = new GbsFile(path);
-		Tag filetag = gbs.getTag();
-		final int oldHash = Objects.hash(tag.getAuthor(), tag.getCopyright(), tag.getTitle());
-		final int currentHash = Objects.hash(filetag.getAuthor(), filetag.getCopyright(), filetag.getTitle());
-
-		if (oldHash != currentHash) {
-			Logger.debug("Hash has changed, writing changes");
-			filetag.setCopyright(tag.getCopyright());
-			filetag.setTitle(tag.getTitle());
-			filetag.setAuthor(tag.getAuthor());
-			gbs.save();
-		}
-		else {
-			Logger.debug("Hash has not changed. Do nothing");
-		}
-		Logger.debug("Old hash: {}", oldHash);
-		Logger.debug("New hash: {}", currentHash);
+		GbsFileutil.writeChanges(path, tag);
 	}
 
 	private void updateTag() {

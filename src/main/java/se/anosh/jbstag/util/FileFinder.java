@@ -6,9 +6,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream;
 
-public class FileFinder extends SimpleFileVisitor<Path> {
+public final class FileFinder extends SimpleFileVisitor<Path> {
 
     private final PathMatcher matcher;
     private final List<Path> myList = new LinkedList<>();
