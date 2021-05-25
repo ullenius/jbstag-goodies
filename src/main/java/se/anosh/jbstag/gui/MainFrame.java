@@ -221,17 +221,18 @@ public class MainFrame extends JPanel {
 		Files.walkFileTree(Paths.get(path.toString()), fs);
 		// get the matched paths
 		Logger.debug("total matches {}", fs.getTotalMatches());
-		List<Path> files = fs.getList();
-		for (Path p : files) {
-			if (readFile(p.toString())) {
-				updateFields(p.getFileName().toString(), p.toAbsolutePath().toString());
-			}
-		}
+		fs.getList().stream()
+				.filter(this::readFile)
+				.forEach(this::updateFields);
 		db.sort( (a,b) -> a.getTitle().compareTo(b.getTitle()));
 	}
 
 	public void setAddFileListener(AddGbsFileListener listener) {
 		this.addFileListener = listener;
+	}
+
+	private void updateFields(Path path) {
+		updateFields(path.getFileName().toString(), path.toAbsolutePath().toString());
 	}
 
 	private void updateFields(String filename, String fullpath) {
@@ -249,6 +250,10 @@ public class MainFrame extends JPanel {
 		addFileListener.refresh();
 		beanProperty.setValue(newBean);
 		trigger.triggerCommit();
+	}
+
+	private boolean readFile(final Path file) {
+		return readFile(file.toString());
 	}
 
 	private boolean readFile(final String filename) {

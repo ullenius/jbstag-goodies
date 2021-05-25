@@ -3,14 +3,15 @@ package se.anosh.jbstag.util;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class FileFinder extends SimpleFileVisitor<Path> {
 
     private final PathMatcher matcher;
-    private List<Path> myList = new ArrayList<>();
+    private final List<Path> myList = new LinkedList<>();
 
     public FileFinder(String pattern) {
         matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
