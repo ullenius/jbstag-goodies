@@ -28,7 +28,7 @@ Or run the build-script provided:
 
 ## Install
 I've included a executable jar-file to simplify for end-users who can't compile stuff on their platform.
-* Download [jbstag-goodies0.9.zip](https://github.com/ullenius/jbstag-goodies/releases/download/v0.9-beta/jbstag-goodies0.9.zip)
+* Download [jbstag-goodies0.9.1.zip](https://github.com/ullenius/jbstag-goodies/releases/download/v0.9.1-beta/jbstag-goodies0.9.1.zip)
 
 
 ## Issues
