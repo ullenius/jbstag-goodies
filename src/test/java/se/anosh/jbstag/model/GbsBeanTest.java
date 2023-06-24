@@ -15,7 +15,7 @@ public class GbsBeanTest {
     private static final String COPYRIGHT = "1993 Konami";
     private static final String FILENAME = "kiddracula.gbs";
 
-    private static final String FULL_PATH = "/root/warez/gbs/".concat(FILENAME);
+    private static final String FULL_PATH = "/root/warez/gbs/".concat(FILENAME); // dummy path
 
     private ValueModel titleModel;
     private ValueModel composerModel;

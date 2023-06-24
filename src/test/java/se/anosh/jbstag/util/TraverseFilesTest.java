@@ -21,7 +21,7 @@ public class TraverseFilesTest {
 
     @Before
     public void setup() {
-         directory = Paths.get("src/main/resources");
+         directory = Paths.get("src/test/resources");
          FOO_GBS = Paths.get("foo.gbs");
          BAR_GBS = Paths.get("bar.gbs");
          BAZ_GBS = Paths.get("baz.gbs");
@@ -31,12 +31,14 @@ public class TraverseFilesTest {
     public void findGbsFiles() throws IOException {
         List<Path> results =  TraverseFiles
                 .stream(directory.toFile())
+                .map(Path::getFileName)
                 .collect(Collectors.toList());
 
+        // sorted by directory, in order traversal
         assertEquals(3, results.size());
-        assertEquals(BAZ_GBS, results.get(0).getFileName());
-        assertEquals(BAR_GBS, results.get(1).getFileName());
-        assertEquals(FOO_GBS, results.get(2).getFileName());
+        assertEquals(FOO_GBS, results.get(0));
+        assertEquals(BAR_GBS, results.get(1));
+        assertEquals(BAZ_GBS, results.get(2));
     }
 
 

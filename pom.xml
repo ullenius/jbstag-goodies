@@ -42,14 +42,12 @@
 			<scope>test</scope>
 		</dependency>
 
-			<!-- https://mvnrepository.com/artifact/com.jgoodies/jgoodies-binding -->
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>jgoodies-binding</artifactId>
 			<version>2.13.0</version>
 		</dependency>
 
-			<!-- https://mvnrepository.com/artifact/com.jgoodies/jgoodies-forms -->
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>jgoodies-forms</artifactId>
@@ -64,7 +62,6 @@
 			<systemPath>${project.basedir}/src/main/resources/gbstag-lib-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.tinylog/tinylog -->
 		<dependency>
 			<groupId>org.tinylog</groupId>
 			<artifactId>tinylog</artifactId>
