@@ -28,7 +28,7 @@ public final class FileFinder extends SimpleFileVisitor<Path> {
     // Invoke the pattern matching
     // method on each file.
     @Override
-    public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
         match(file);
         return FileVisitResult.CONTINUE;
     }
